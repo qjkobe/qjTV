@@ -10,8 +10,8 @@
 <html>
 <head>
     <title>我的直播间</title>
-    <link type="text/css" rel="stylesheet" href="${ctx}/theme/css/fileinput.css" />
     <%@include file="../commons/headjs.jsp"%>
+    <link type="text/css" rel="stylesheet" href="${ctx}/theme/css/fileinput.css" />
     <script type="text/javascript" src="${ctx}/theme/js/fileinput.js"></script>
     <script type="text/javascript" src="${ctx}/theme/js/fileinput_locale_zh.js"></script>
     <script type="text/javascript" src="${ctx}/theme/js/ajaxfileupload.js"></script>
@@ -129,6 +129,9 @@
 </script>
 <body>
 <h1>${userinfo.nickname}的直播间</h1>
+<h2>直播标题：${liveroom.title}</h2>
+<%--TODO: 修改标题待做--%>
+<button>修改标题</button>
 <div>
     <button id="openRoom">开启直播间</button>
     <button id="closeRoom">关闭直播间</button>

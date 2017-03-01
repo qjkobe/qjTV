@@ -9,8 +9,8 @@
 <%@include file="../commons/jsptag.jsp"%>
 <html>
 <head>
-    <title>Title</title>
-    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <title>登录</title>
+    <%@include file="../commons/headjs.jsp"%>
 </head>
 <script>
     $(function(){

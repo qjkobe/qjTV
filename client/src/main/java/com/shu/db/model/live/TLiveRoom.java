@@ -19,6 +19,11 @@ public class TLiveRoom extends Pojo {
 
     private Integer people;
 
+    private String title;
+
+    private String gonggao;
+
+
     public String getId() {
         return id;
     }
@@ -75,4 +80,19 @@ public class TLiveRoom extends Pojo {
         this.people = people;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGonggao() {
+        return gonggao;
+    }
+
+    public void setGonggao(String gonggao) {
+        this.gonggao = gonggao;
+    }
 }

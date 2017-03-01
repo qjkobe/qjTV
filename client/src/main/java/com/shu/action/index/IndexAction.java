@@ -31,7 +31,12 @@ public class IndexAction {
         queryRoom.setIslive(1);
         //TODO: 之后可以用Order类进行人气排序，后期进行智能推荐。现在先只是随便找一个开播的放在首页
         List<TLiveRoom> list1 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
-        model.addAttribute("room", list1.get(0));
-        return "login/login";
+        if(list1.size() == 0){
+            //不要让这种没有任何直播开启的情况出现。
+            model.addAttribute("liveroom", "none");
+            return "index/index";
+        }
+        model.addAttribute("liveroom", list1.get(0));
+        return "index/index";
     }
 }
