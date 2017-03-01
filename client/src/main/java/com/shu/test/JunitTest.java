@@ -1,9 +1,15 @@
 package com.shu.test;
 
+import com.shu.db.model.follow.TFollow;
 import com.shu.db.model.live.TLiveRoom;
+import com.shu.db.model.live.TRoomBan;
+import com.shu.db.model.live.TRoomManage;
 import com.shu.db.model.user.TUser;
 import com.shu.db.model.user.TUserInfo;
+import com.shu.services.follow.TFollowService;
 import com.shu.services.live.TLiveRoomService;
+import com.shu.services.live.TRoomBanService;
+import com.shu.services.live.TRoomManageService;
 import com.shu.services.test.TestService;
 import com.shu.services.user.TUserInfoService;
 import com.shu.services.user.TUserService;
@@ -70,4 +76,73 @@ public class JunitTest {
             System.out.println(x.getApp());
         }
     }
+
+    /**
+     * 测试TFollow的Service
+     * 2017年3月1日 14:30:53测试通过
+     */
+    @Test
+    public void TestTFollow(){
+        String[] paths = new String[] { "spring/applicationContext-bo.xml" };
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(paths);
+
+        TFollowService ts = (TFollowService) ctx.getBean("followService");
+        TFollow follow = ts.getFollowById("test");
+        System.out.println(follow.getFanid());
+
+        TFollow queryFollow = new TFollow();
+        queryFollow.setFanid("fan");
+
+        List<TFollow> list1 = ts.getFollowListByParam(queryFollow, null, null);
+        for(TFollow x : list1){
+            System.out.println(x.getFollowid());
+        }
+    }
+
+    /**
+     * 测试TRoomBan的Service
+     * 2017年3月1日 15:55:16测试通过
+     */
+    @Test
+    public void TestRoomBan(){
+        String[] paths = new String[] { "spring/applicationContext-bo.xml" };
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(paths);
+
+        TRoomBanService ts = (TRoomBanService) ctx.getBean("RBanService");
+        TRoomBan tRoomBan = ts.getRoomBanById("test");
+
+        System.out.println(tRoomBan.getRid());
+
+        TRoomBan queryBan = new TRoomBan();
+        queryBan.setUid("uid");
+
+        List<TRoomBan> list1 = ts.getRoomBanListByParam(queryBan, null, null);
+        for(TRoomBan x : list1){
+            System.out.println(x.getRid());
+        }
+    }
+
+    /**
+     * 测试TRoomManage的Service
+     * 2017年3月1日 15:55:22测试通过
+     */
+    @Test
+    public void TestRoomManage(){
+        String[] paths = new String[] { "spring/applicationContext-bo.xml" };
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(paths);
+
+        TRoomManageService ts = (TRoomManageService) ctx.getBean("RManageService");
+        TRoomManage tRoomManage = ts.getRManageById("test");
+
+        System.out.println(tRoomManage.getRid());
+
+        TRoomManage queryBan = new TRoomManage();
+        queryBan.setUid("uid");
+
+        List<TRoomManage> list1 = ts.getRManageListByParam(queryBan, null, null);
+        for(TRoomManage x : list1){
+            System.out.println(x.getRid());
+        }
+    }
+
 }

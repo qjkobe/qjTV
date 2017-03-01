@@ -24,24 +24,24 @@ public class TLiveRoomServiceImpl implements TLiveRoomService {
     @SuppressWarnings("unchecked")
     @Override
     @Transactional(readOnly = true)
-    public List<TLiveRoom> getLRoomListByParam(TLiveRoom follow, Order order, Pager page) {
+    public List<TLiveRoom> getLRoomListByParam(TLiveRoom room, Order order, Pager page) {
         if (page != null) {
-            int count = tLiveRoomMapper.selectCountByParam(follow);
+            int count = tLiveRoomMapper.selectCountByParam(room);
             page.setRecordCount(count);
         }
-        return tLiveRoomMapper.selectListByParam(follow, order, page);
+        return tLiveRoomMapper.selectListByParam(room, order, page);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addLRoom(TLiveRoom follow) {
-        tLiveRoomMapper.insertSelective(follow);
+    public void addLRoom(TLiveRoom room) {
+        tLiveRoomMapper.insertSelective(room);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void modifyLRoom(TLiveRoom follow) {
-        tLiveRoomMapper.updateByPrimaryKeySelective(follow);
+    public void modifyLRoom(TLiveRoom room) {
+        tLiveRoomMapper.updateByPrimaryKeySelective(room);
     }
 
     @Override

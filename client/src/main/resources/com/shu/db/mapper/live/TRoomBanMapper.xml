@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.shu.db.dao.test.TestMapper" >
-  <resultMap id="BaseResultMap" type="com.shu.db.model.test.Test" >
+<mapper namespace="com.shu.db.dao.live.TRoomBanMapper" >
+  <resultMap id="BaseResultMap" type="com.shu.db.model.live.TRoomBan" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="rid" property="rid" jdbcType="VARCHAR" />
     <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateuser" jdbcType="VARCHAR" />
     <result column="isDelete" property="isdelete" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, age, code, createTime, updateTime, updateUser, isDelete
+    id, uid, rid, createTime, updateTime, updateUser, isDelete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from test
+    from t_room_ban
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from test
+    delete from t_room_ban
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.shu.db.model.test.Test" >
-    insert into test (id, name, age, 
-      code, createTime, updateTime, 
-      updateUser, isDelete)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
-      #{code,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{updateuser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.shu.db.model.live.TRoomBan" >
+    insert into t_room_ban (id, uid, rid, 
+      createTime, updateTime, updateUser, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{rid,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.shu.db.model.test.Test" >
-    insert into test
+  <insert id="insertSelective" parameterType="com.shu.db.model.live.TRoomBan" >
+    insert into t_room_ban
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="uid != null" >
+        uid,
       </if>
-      <if test="age != null" >
-        age,
-      </if>
-      <if test="code != null" >
-        code,
+      <if test="rid != null" >
+        rid,
       </if>
       <if test="createtime != null" >
         createTime,
@@ -64,14 +60,11 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
       </if>
-      <if test="age != null" >
-        #{age,jdbcType=INTEGER},
-      </if>
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
+      <if test="rid != null" >
+        #{rid,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null" >
         #{createtime,jdbcType=TIMESTAMP},
@@ -87,17 +80,14 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shu.db.model.test.Test" >
-    update test
+  <update id="updateByPrimaryKeySelective" parameterType="com.shu.db.model.live.TRoomBan" >
+    update t_room_ban
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
       </if>
-      <if test="age != null" >
-        age = #{age,jdbcType=INTEGER},
-      </if>
-      <if test="code != null" >
-        code = #{code,jdbcType=VARCHAR},
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null" >
         createTime = #{createtime,jdbcType=TIMESTAMP},
@@ -114,11 +104,10 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shu.db.model.test.Test" >
-    update test
-    set name = #{name,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER},
-      code = #{code,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.shu.db.model.live.TRoomBan" >
+    update t_room_ban
+    set uid = #{uid,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
       updateTime = #{updatetime,jdbcType=TIMESTAMP},
       updateUser = #{updateuser,jdbcType=VARCHAR},
@@ -128,19 +117,16 @@
 
   <select id="selectListByParam" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
-    from test
+    from t_room_ban
     where 1 = 1
     <if test="pojo != null and pojo.id != null and pojo.id != ''">
-      and name = #{pojo.id,jdbcType=VARCHAR}
+      and id = #{pojo.id,jdbcType=VARCHAR}
     </if>
-    <if test="pojo != null and pojo.name != null and pojo.name != ''">
-      and name = #{pojo.name,jdbcType=VARCHAR}
+    <if test="pojo != null and pojo.uid != null and pojo.uid != ''">
+      and uid = #{pojo.uid,jdbcType=VARCHAR}
     </if>
-    <if test="pojo != null and pojo.age != null">
-      and age = #{pojo.age,jdbcType=INTEGER}
-    </if>
-    <if test="pojo != null and pojo.code != null and pojo.code != ''">
-      and name = #{pojo.code,jdbcType=VARCHAR}
+    <if test="pojo != null and pojo.rid != null and pojo.rid != ''">
+      and rid = #{pojo.rid,jdbcType=VARCHAR}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
       and isdelete = #{pojo.isDelete,jdbcType=INTEGER}
@@ -158,13 +144,16 @@
 
   <select id="selectCountByParam" resultType="int">
     select count(1)
-    from test
+    from t_room_ban
     where 1 = 1
-    <if test="pojo != null and pojo.name != null and pojo.name != ''">
-      and name = #{pojo.name,jdbcType=VARCHAR}
+    <if test="pojo != null and pojo.id != null and pojo.id != ''">
+      and id = #{pojo.id,jdbcType=VARCHAR}
     </if>
-    <if test="pojo != null and pojo.age != null">
-      and age = #{pojo.age,jdbcType=INTEGER}
+    <if test="pojo != null and pojo.uid != null and pojo.uid != ''">
+      and uid = #{pojo.uid,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.rid != null and pojo.rid != ''">
+      and rid = #{pojo.rid,jdbcType=VARCHAR}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
       and isdelete = #{pojo.isDelete,jdbcType=INTEGER}

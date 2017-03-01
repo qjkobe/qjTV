@@ -50,6 +50,16 @@ public class LoginAction {
         return jsonObject.toString();
     }
 
+    @RequestMapping(value = "logout", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String logout(TUser user, HttpSession session){
+        JSONObject jsonObject = new JSONObject();
+        session.removeAttribute("user");
+
+        jsonObject.put("status", Const.STATUS_SUCCESS);
+        return jsonObject.toString();
+    }
+
     @RequestMapping(value = "register", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String register(TUser user){

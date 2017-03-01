@@ -39,6 +39,24 @@
             });
         });
 
+        $("#logout").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/login/logout",
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "success"){
+                        alert("已登出");
+                        history.go(0);
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            })
+        })
+
         $("#goZhibo").click(function(){
             window.location.href = "/user/myZhibo?userId=${user.id}";
         })
@@ -70,30 +88,34 @@
         //文件上传按钮
         //TODO:预览文件直接保存。filename为空，需要后台处理
         $("#upload_btn").click(function(){
-            $.ajaxFileUpload({
-                secureuri:false,
-                url:'${ctx}/user/uploadlogo',
-                beforeSend:function(){},
-                fileElementId:'uploadfile',
-                type: 'post',
-                dataType: 'json',
-                //data:{sessionId:'${sessionId}'},
-                success:function(data, status){
-                    temp = eval(data);
-                    if(temp.status == "success"){
-                        alert("上传成功!");
-                        history.go(0);
-                    }else if(temp.status == "error"){
-                        alert("文件为空");
+            if($("#uploadfile").val() == ""){
+                alert("请上传正确的文件");
+            }else{
+                $.ajaxFileUpload({
+                    secureuri:false,
+                    url:'${ctx}/user/uploadlogo',
+                    beforeSend:function(){},
+                    fileElementId:'uploadfile',
+                    type: 'post',
+                    dataType: 'json',
+                    //data:{sessionId:'${sessionId}'},
+                    success:function(data, status){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            alert("上传成功!");
+                            history.go(0);
+                        }else if(temp.status == "error"){
+                            alert("文件为空");
+                        }
+                    },
+                    error:function(XmlHttpRequest,textStatus,errorThrown){
+    //                    alert(XmlHttpRequest.status);
+    //                    alert(XmlHttpRequest.readyState);
+    //                    alert(textStatus);
+                        alert("上传失败！");
                     }
-                },
-                error:function(XmlHttpRequest,textStatus,errorThrown){
-//                    alert(XmlHttpRequest.status);
-//                    alert(XmlHttpRequest.readyState);
-//                    alert(textStatus);
-                    alert("上传失败！");
-                }
-            });
+                });
+            }
         });
 
     });
@@ -108,15 +130,17 @@
     手机号：<input type="text" id="phone" name="phone" value="${userinfo.phone}">
     <input type="button" id="editinfo" value="修改">
 </form>
+<button id="logout">登出</button>
+<br>
 头像：<input type="hidden" id="headimg" name="headimg" value="${userinfo.headimg}">
-<div><img src="${ctx}/upload/logo/${userinfo.headimg}" width="100" height="150" alt="头像"></div>
+<div><img src="${ctx}/upload/logo/${userinfo.headimg}" width="150" height="150" alt="头像"></div>
 <div class="row">
     <div class="col-xs-6">
         <form class="form-horizontal required-validate" action="" enctype="multipart/form-data" method="post">
             <div class="form-group">
                 <label class="col-md-1 control-label">头像设置</label>
                 <div class="col-md-10 tl th">
-                    <input type="file" id="uploadfile" name="uploadfile" class="projectfile" value="${ctx}/jzm.jpg" />
+                    <input type="file" id="uploadfile" name="uploadfile" class="projectfile" value="${ctx}/upload/logo/${userinfo.headimg}" />
                     <p class="help-block">支持jpg、jpeg、png、gif格式，大小不超过2.0M</p>
                 </div>
             </div>

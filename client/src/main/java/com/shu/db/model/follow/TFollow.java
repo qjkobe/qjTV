@@ -6,11 +6,23 @@ import com.shu.db.model.Pojo;
  * Created by admin on 2017/2/2.
  */
 public class TFollow extends Pojo {
+
+    private String id;
+
     private String followid;
 
     private String fanid;
 
     private Integer hufen;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public String getFollowid() {
         return followid;

@@ -17,6 +17,8 @@ public class TLiveRoom extends Pojo {
 
     private String img;
 
+    private Integer people;
+
     public String getId() {
         return id;
     }
@@ -63,6 +65,14 @@ public class TLiveRoom extends Pojo {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Integer getPeople() {
+        return people;
+    }
+
+    public void setPeople(Integer people) {
+        this.people = people;
     }
 
 }
