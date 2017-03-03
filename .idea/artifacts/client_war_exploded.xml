@@ -5,6 +5,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="client" />
+          <element id="module-output" name="Broadcast" />
         </element>
         <element id="directory" name="lib">
           <element id="file-copy" path="$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11.jar" output-file-name="Junit-4.11.jar" />

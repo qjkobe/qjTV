@@ -44,6 +44,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+            测试参数：${test}
             <c:if test="${liveroom == 'none'}">
                 当前没有任何直播
             </c:if>

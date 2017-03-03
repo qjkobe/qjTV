@@ -11,14 +11,16 @@
     <result column="people" property="people" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="gonggao" property="gonggao" jdbcType="VARCHAR" />
+    <result column="roomNum" property="roomnum" jdbcType="VARCHAR" />
+    <result column="rommNick" property="rommnick" jdbcType="VARCHAR" />
     <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateuser" jdbcType="VARCHAR" />
     <result column="isDelete" property="isdelete" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, islive, app, stream, img, people, title, gonggao, createTime, updateTime,
-    updateUser, isDelete
+    id, uid, islive, app, stream, img, people, title, gonggao, roomNum, rommNick, createTime,
+    updateTime, updateUser, isDelete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
@@ -33,14 +35,14 @@
   <insert id="insert" parameterType="com.shu.db.model.live.TLiveRoom" >
     insert into t_live_room (id, uid, islive,
     app, stream, img, people,
-    title, gonggao, createTime,
-    updateTime, updateUser, isDelete
-    )
+    title, gonggao, roomNum,
+    rommNick, createTime, updateTime,
+    updateUser, isDelete)
     values (#{id,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{islive,jdbcType=INTEGER},
     #{app,jdbcType=VARCHAR}, #{stream,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{people,jdbcType=INTEGER},
-    #{title,jdbcType=VARCHAR}, #{gonggao,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
-    #{updatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}
-    )
+    #{title,jdbcType=VARCHAR}, #{gonggao,jdbcType=VARCHAR}, #{roomnum,jdbcType=VARCHAR},
+    #{rommnick,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP},
+    #{updateuser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.shu.db.model.live.TLiveRoom" >
     insert into t_live_room
@@ -71,6 +73,12 @@
       </if>
       <if test="gonggao != null" >
         gonggao,
+      </if>
+      <if test="roomnum != null" >
+        roomNum,
+      </if>
+      <if test="rommnick != null" >
+        rommNick,
       </if>
       <if test="createtime != null" >
         createTime,
@@ -113,6 +121,12 @@
       <if test="gonggao != null" >
         #{gonggao,jdbcType=VARCHAR},
       </if>
+      <if test="roomnum != null" >
+        #{roomnum,jdbcType=VARCHAR},
+      </if>
+      <if test="rommnick != null" >
+        #{rommnick,jdbcType=VARCHAR},
+      </if>
       <if test="createtime != null" >
         #{createtime,jdbcType=TIMESTAMP},
       </if>
@@ -154,6 +168,12 @@
       <if test="gonggao != null" >
         gonggao = #{gonggao,jdbcType=VARCHAR},
       </if>
+      <if test="roomnum != null" >
+        roomNum = #{roomnum,jdbcType=VARCHAR},
+      </if>
+      <if test="rommnick != null" >
+        rommNick = #{rommnick,jdbcType=VARCHAR},
+      </if>
       <if test="createtime != null" >
         createTime = #{createtime,jdbcType=TIMESTAMP},
       </if>
@@ -179,6 +199,8 @@
       people = #{people,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
       gonggao = #{gonggao,jdbcType=VARCHAR},
+      roomNum = #{roomnum,jdbcType=VARCHAR},
+      rommNick = #{rommnick,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
       updateTime = #{updatetime,jdbcType=TIMESTAMP},
       updateUser = #{updateuser,jdbcType=VARCHAR},
@@ -202,6 +224,15 @@
     <if test="pojo != null and pojo.stream != null and pojo.stream != ''">
       and stream = #{pojo.stream,jdbcType=VARCHAR}
     </if>
+    <if test="pojo != null and pojo.title != null and pojo.title != ''">
+      and title = #{pojo.title,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.roomnum != null and pojo.roomnum != ''">
+      and roomNum = #{pojo.roomnum,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.rommnick != null and pojo.rommnick != ''">
+      and rommNick = #{pojo.rommnick,jdbcType=VARCHAR}
+    </if>
     <if test="pojo != null and pojo.islive != null">
       and islive = #{pojo.islive,jdbcType=INTEGER}
     </if>
@@ -221,16 +252,31 @@
 
   <select id="selectCountByParam" resultType="int">
     select count(1)
-    from t_mail
+    from t_live_room
     where 1 = 1
     <if test="pojo != null and pojo.id != null and pojo.id != ''">
       and id = #{pojo.id,jdbcType=VARCHAR}
     </if>
-    <if test="pojo != null and pojo.uidsend != null and pojo.uidsend != ''">
-      and uidSend = #{pojo.uidsend,jdbcType=VARCHAR}
+    <if test="pojo != null and pojo.uid != null and pojo.uid != ''">
+      and uid = #{pojo.uid,jdbcType=VARCHAR}
     </if>
-    <if test="pojo != null and pojo.uidreceive != null and pojo.uidreceive != ''">
-      and uidReceive = #{pojo.uidreceive,jdbcType=VARCHAR}
+    <if test="pojo != null and pojo.app != null and pojo.app != ''">
+      and app = #{pojo.app,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.stream != null and pojo.stream != ''">
+      and stream = #{pojo.stream,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.title != null and pojo.title != ''">
+      and title = #{pojo.title,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.roomnum != null and pojo.roomnum != ''">
+      and roomNum = #{pojo.roomnum,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.rommnick != null and pojo.rommnick != ''">
+      and rommNick = #{pojo.rommnick,jdbcType=VARCHAR}
+    </if>
+    <if test="pojo != null and pojo.islive != null">
+      and islive = #{pojo.islive,jdbcType=INTEGER}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
       and isdelete = #{pojo.isDelete,jdbcType=INTEGER}
