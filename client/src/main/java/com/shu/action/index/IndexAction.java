@@ -83,10 +83,10 @@ public class IndexAction {
         List<TLiveRoom> list1 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
         if(list1.size() == 0){
             //不要让这种没有任何直播开启的情况出现。
-            model.addAttribute("liveroom", "none");
+            model.addAttribute("liverooms", "none");
             return "index/live";
         }
-        model.addAttribute("liveroom", list1);
+        model.addAttribute("liverooms", list1);
         return "index/live";
     }
 

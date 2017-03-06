@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
-  Date: 2017/3/1
-  Time: 15:57
+  Date: 2017/3/6
+  Time: 17:10
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../commons/jsptag.jsp"%>
 <html>
 <head>
-    <title>首页</title>
+    <title>所有直播-qjTV</title>
     <%@include file="../commons/headjs.jsp"%>
 </head>
 <body>
@@ -20,8 +20,8 @@
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首页</a></li>
-                <li><a href="#">直播</a></li>
+                <li><a href="#">首页</a></li>
+                <li  class="active"><a href="#">直播</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         分类
@@ -47,12 +47,22 @@
             <c:if test="${liveroom == 'none'}">
                 当前没有任何直播
             </c:if>
-            <c:if test="${liveroom != 'none'}">
-                <a href="/index/toRoom/${liveroom.roomnum}" title="点击进入直播间">
-                    <img src="${ctx}/upload/cover/${liveroom.img}" alt="点击进入直播间">
-                </a><br>
-                <strong>${liveroom.title}</strong>
-            </c:if>
+
+            <ul class="" id="">
+                <%--获得直播间，每获取四个，就增加一个li--%>
+                <c:forEach items="${liverooms}" var="item" varStatus="st">
+                    <c:if test="${st.count % 4==1}">
+                        <li>
+                    </c:if>
+                    <a href="/index/toRoom/${item.roomnum}" title="点击进入直播间">
+                        <img src="${ctx}/upload/cover/${item.img}" alt="点击进入直播间">
+                    </a><br>
+                    <strong>${item.title}</strong>
+                    <c:if test="${st.count % 4==0}">
+                        </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </div>
