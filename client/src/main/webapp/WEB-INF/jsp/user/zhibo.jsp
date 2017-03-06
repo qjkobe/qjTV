@@ -144,7 +144,7 @@
     <div class="col-xs-6">
         <form class="form-horizontal required-validate" action="" enctype="multipart/form-data" method="post">
             <div class="form-group">
-                <label class="col-md-1 control-label">头像设置</label>
+                <label class="col-md-1 control-label">封面设置</label>
                 <div class="col-md-10 tl th">
                     <input type="file" id="uploadfile" name="uploadfile" class="projectfile" value="${ctx}/upload/cover/${liveroom.img}" />
                     <p class="help-block">支持jpg、jpeg、png、gif格式，大小不超过2.0M</p>

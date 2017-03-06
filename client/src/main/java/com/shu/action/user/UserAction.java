@@ -14,6 +14,7 @@ import org.apache.commons.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -118,14 +119,14 @@ public class UserAction {
     }
 
     @RequestMapping(value = "myZhibo", produces = "text/html;charset=UTF-8")
-    public String goZhibo(Model model, String userId, HttpServletRequest request){
+    public String goZhibo(Model model, HttpServletRequest request){
         //先检查有没有申请过直播间
         TUser user = (TUser) request.getSession().getAttribute("user");
 
         model.addAttribute("user", user);
 
         TUserInfo userInfo = new TUserInfo();
-        userInfo.setUid(userId);
+        userInfo.setUid(user.getId());
         List<TUserInfo> userInfoList = tUserInfoService.getUserinfoListByParam(userInfo, null, null);
         model.addAttribute("userinfo", userInfoList.get(0));
 
@@ -173,6 +174,18 @@ public class UserAction {
             newRoom.setApp("qunima");
             newRoom.setId("jzm.jpg");
             newRoom.setStream(user.getId());
+
+            //生成6位随机数字作为房间号。并不与之前的重复
+            while(true){
+                TLiveRoom queryRoom2 = new TLiveRoom();
+                int randomNum = (int)((Math.random()*9+1)*100000);
+                queryRoom2.setRoomnum(Integer.toString(randomNum));
+                List<TLiveRoom> list2 = tLiveRoomService.getLRoomListByParam(queryRoom2, null, null);
+                if(list2.size() == 0) {
+                    newRoom.setRoomnum(Integer.toString(randomNum));
+                    break;
+                }
+            }
             tLiveRoomService.addLRoom(newRoom);
         }
 

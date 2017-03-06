@@ -93,12 +93,31 @@ public class IndexAction {
     /**
      * 进入别人的直播间。每个人都有自己的房间号
      */
-    @RequestMapping(value = "toRoom", produces = "text/html;charset=UTF-8")
-    public String toRoom(Model model, String id, HttpServletRequest request){
+    @RequestMapping(value = "toRoom/{roomNum}", produces = "text/html;charset=UTF-8")
+    public String toRoom(Model model, String id, HttpServletRequest request, @PathVariable String roomNum){
 
-        //根据房间id获得房间信息
-        TLiveRoom room = tLiveRoomService.getLRoomById(id);
+        //根据房间号获得房间信息
+        TLiveRoom queryRoom = new TLiveRoom();
+        queryRoom.setRoomnum(roomNum);
+        List<TLiveRoom> list1 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
+        //如果list为空说明房间号错误，去房间不存在页面
+        if(list1.size() == 0){
+            return "error/noRoom";
+        }
+        TLiveRoom room = list1.get(0);
+
         model.addAttribute("liveroom", room);
+
+        //把主播的信息也加入model
+        TUserInfo queryUser = new TUserInfo();
+        queryRoom.setUid(room.getUid());
+        List<TUserInfo> list2 = tUserInfoService.getUserinfoListByParam(queryUser, null, null);
+        if(list2.size() == 0){
+            //这里主播不存在是不科学的
+            return "error/error";
+        }
+        TUserInfo zhubo = list2.get(0);
+        model.addAttribute("zhubo", zhubo);
 
         //判断用户有没有登录，作为判断用户权限的重要依据
         TUser user = (TUser) request.getSession().getAttribute("user");
@@ -106,12 +125,16 @@ public class IndexAction {
             TUserInfo queryInfo = new TUserInfo();
             queryInfo.setUid(user.getId());
             TUserInfo userInfo = tUserInfoService.getUserinfoListByParam(queryInfo, null, null).get(0);
+
+            //如果是直播主，直接去指定页面：
+            if(userInfo.getId().equals(room.getUid())){
+                return "redirect:/user/myZhibo";
+            }
             model.addAttribute("islogin", "y");
             model.addAttribute("userinfo", userInfo);
         }else{
             model.addAttribute("islogin", "n");
         }
-        int roomNum = 0;
-        return "index/" + roomNum;
+        return "index/room";
     }
 }
