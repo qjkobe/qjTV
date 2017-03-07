@@ -15,12 +15,68 @@
 </head>
 <script>
     $(function(){
-
-    })
+        $("#follow").click(function(){
+            if("${islogin}" == "n"){
+                alert("请先登录！");
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "/fan/follow",
+                    data: {
+                        followid: "${liveroom.uid}",
+                        fanid: "${userinfo.uid}"
+                    },
+                    dataType: "json",
+                    success: function(data){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            alert("关注成功");
+                            history.go(0);
+                        }
+                    },
+                    error: function(data){
+                        alert("系统错误");
+                    }
+                });
+            }
+        });
+        $("#unfollow").click(function(){
+            if("${islogin}" == "n"){
+                alert("请先登录！");
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "/fan/unfollow",
+                    data: {
+                        followid: "${liveroom.uid}",
+                        fanid: "${userinfo.uid}"
+                    },
+                    dataType: "json",
+                    success: function(data){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            alert("取关成功");
+                            history.go(0);
+                        }
+                    },
+                    error: function(data){
+                        alert("系统错误");
+                    }
+                });
+            }
+        });
+    });
 </script>
 <body>
 <h1>主播：${zhubo.nickname}的直播间</h1>
 <h2>直播标题：${liveroom.title}</h2>
+<c:if test="${isFollowed == 'n'}">
+    <button id="follow">关注</button>
+</c:if>
+
+<c:if test="${isFollowed == 'y'}">
+    <button id="unfollow">取消关注</button>
+</c:if>
 <div>
     <br>
 </div>

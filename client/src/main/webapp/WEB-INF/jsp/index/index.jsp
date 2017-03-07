@@ -49,7 +49,7 @@
             </c:if>
             <c:if test="${liveroom != 'none'}">
                 <a href="/index/toRoom/${liveroom.roomnum}" title="点击进入直播间">
-                    <img src="${ctx}/upload/cover/${liveroom.img}" alt="点击进入直播间">
+                    <img src="${ctx}/upload/cover/${liveroom.img}" width="300" height="200" alt="点击进入直播间">
                 </a><br>
                 <strong>${liveroom.title}</strong>
             </c:if>

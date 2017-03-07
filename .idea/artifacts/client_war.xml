@@ -4,8 +4,8 @@
     <root id="archive" name="client-1.0-SNAPSHOT.war">
       <element id="artifact" artifact-name="client:war exploded" />
       <element id="directory" name="WEB-INF">
-        <element id="directory" name="classes">
-          <element id="module-output" name="Broadcast" />
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/client/src/main/webapp/WEB-INF/libs/ganymed-ssh2-build210.jar" />
         </element>
       </element>
     </root>

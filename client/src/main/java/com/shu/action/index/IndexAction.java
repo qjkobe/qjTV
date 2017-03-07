@@ -1,8 +1,10 @@
 package com.shu.action.index;
 
+import com.shu.db.model.follow.TFollow;
 import com.shu.db.model.live.TLiveRoom;
 import com.shu.db.model.user.TUser;
 import com.shu.db.model.user.TUserInfo;
+import com.shu.services.follow.TFollowService;
 import com.shu.services.live.TLiveRoomService;
 import com.shu.services.user.TUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class IndexAction {
 
     @Autowired
     TUserInfoService tUserInfoService;
+
+    @Autowired
+    TFollowService tFollowService;
 
     /**
      * 首页显示一个推荐直播。
@@ -130,6 +135,19 @@ public class IndexAction {
             if(userInfo.getId().equals(room.getUid())){
                 return "redirect:/user/myZhibo";
             }
+
+            //判断是否关注
+            TFollow tFollow = new TFollow();
+            tFollow.setFanid(user.getId());
+            tFollow.setFollowid(room.getUid());
+            List<TFollow> list3 = tFollowService.getFollowListByParam(tFollow, null, null);
+            if(list3.size() == 0){
+                //未关注
+                model.addAttribute("isFollowed", "n");
+            }else{
+                model.addAttribute("isFollowed", "y");
+            }
+
             model.addAttribute("islogin", "y");
             model.addAttribute("userinfo", userInfo);
         }else{

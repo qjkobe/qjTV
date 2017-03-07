@@ -189,6 +189,7 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.15</version>
         </dependency>
+
     </dependencies>
 
 
