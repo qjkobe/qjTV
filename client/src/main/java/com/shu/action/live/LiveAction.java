@@ -40,6 +40,18 @@ public class LiveAction {
         return resObj.toString();
     }
 
+    /**
+     * 修改直播间信息，如标题等
+     */
+    @RequestMapping(value = "editRoomInfo", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String editRoomInfo(TLiveRoom tLiveRoom){
+        JSONObject resObj = new JSONObject();
+        tLiveRoomService.modifyLRoom(tLiveRoom);
+        resObj.put("status", Const.STATUS_SUCCESS);
+        return resObj.toString();
+    }
+
     @RequestMapping(value = "setCover", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String setCover(MultipartFile uploadfile, TLiveRoom room, HttpServletRequest request){

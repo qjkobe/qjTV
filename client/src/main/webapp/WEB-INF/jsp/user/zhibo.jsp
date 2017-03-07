@@ -125,13 +125,35 @@
                 });
             }
         });
+
+        $("#saveTitle").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/live/editRoomInfo",
+                data: {
+                    id: "${liveroom.id}",
+                    title: $("#roomTitle").val()
+                },
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "success"){
+                        alert("房间标题修改成功");
+                        history.go(0);
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+        });
     })
 </script>
 <body>
 <h1>${userinfo.nickname}的直播间</h1>
 <h2>直播标题：${liveroom.title}</h2>
 <%--TODO: 修改标题待做--%>
-<button>修改标题</button>
+<button id="changeTitle" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#titleModal">修改标题</button>
 <div>
     <button id="openRoom">开启直播间</button>
     <button id="closeRoom">关闭直播间</button>
@@ -163,8 +185,8 @@
 <!-- this A tag is where your Flowplayer will be placed. it can be anywhere -->
 <a
         href="#"
-        style="display:block;width:720px;height:576px"
-        id="player">
+style="display:block;width:720px;height:576px"
+id="player">
 </a>
 <!-- this will install flowplayer inside previous A- tag. -->
 <script>
@@ -186,5 +208,23 @@
 <p>
     <%--Sample RTMP URL (Live) is "rtmp://115.159.62.204:1935/qunima/123"--%>
 </p>
+
+<div class="modal fade" id="titleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改标题</h4>
+            </div>
+            <div class="modal-body">
+                <input id="roomTitle" type="text" value="${liveroom.title}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveTitle">提交更改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 </body>
 </html>
