@@ -1,5 +1,6 @@
 package com.shu.action.index;
 
+import com.alibaba.fastjson.JSONObject;
 import com.shu.db.model.follow.TFollow;
 import com.shu.db.model.live.TLiveRoom;
 import com.shu.db.model.user.TUser;
@@ -7,13 +8,11 @@ import com.shu.db.model.user.TUserInfo;
 import com.shu.services.follow.TFollowService;
 import com.shu.services.live.TLiveRoomService;
 import com.shu.services.user.TUserInfoService;
+import com.shu.utils.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -93,6 +92,56 @@ public class IndexAction {
         }
         model.addAttribute("liverooms", list1);
         return "index/live";
+    }
+
+    /**
+     * 显示我的关注。
+     */
+    @RequestMapping(value = "myFollow", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String myFollow(Model model, HttpServletRequest request){
+
+        TUser user = (TUser) request.getSession().getAttribute("user");
+        JSONObject resObj = new JSONObject();
+        if(user == null){
+            resObj.put("status", Const.STATUS_NOT_LOGIN);
+            return resObj.toString();
+        }
+
+        TFollow queryFollow = new TFollow();
+        queryFollow.setFanid(user.getId());
+        queryFollow.setIsdelete(0);
+        List<TFollow> list2 = tFollowService.getFollowListByParam(queryFollow, null, null);
+        if(list2.size() == 0){
+            resObj.put("followList", 0);
+        }else{
+            resObj.put("followList", list2);
+        }
+
+        //遍历list查出所有人的直播间
+        TLiveRoom queryRoom = new TLiveRoom();
+        for(int i = 0; i < list2.size(); i++){
+            queryRoom.setUid(list2.get(i).getFollowid());
+            //未开播
+            queryRoom.setIslive(1);
+            List<TLiveRoom> list3 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
+            if(list3.size() != 0){
+                resObj.put("kaibos", list3);
+            }else{
+                resObj.put("kaibos", 0);
+            }
+            //已开播
+            queryRoom.setIslive(0);
+            List<TLiveRoom> list4 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
+            if(list4.size() != 0){
+                resObj.put("weikaibos", list4);
+            }else{
+                resObj.put("weikaibos", 0);
+            }
+        }
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        return resObj.toString();
     }
 
     /**

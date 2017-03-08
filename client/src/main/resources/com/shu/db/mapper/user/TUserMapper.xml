@@ -159,7 +159,7 @@
             and iszhubo = #{pojo.iszhubo,jdbcType=INTEGER}
         </if>
         <if test="pojo != null and pojo.isdelete != null">
-            and isdelete = #{pojo.isDelete,jdbcType=INTEGER}
+            and isDelete = #{pojo.isdelete,jdbcType=INTEGER}{
         </if>
         <if test="orderObj != null">
             order by
@@ -183,7 +183,7 @@
             and level = #{pojo.level,jdbcType=INTEGER}
         </if>
         <if test="pojo != null and pojo.isdelete != null">
-            and isdelete = #{pojo.isDelete,jdbcType=INTEGER}
+            and isDelete = #{pojo.isdelete,jdbcType=INTEGER}{
         </if>
     </select>
 </mapper>

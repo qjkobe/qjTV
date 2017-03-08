@@ -92,6 +92,7 @@ public class JunitTest {
 
         TFollow queryFollow = new TFollow();
         queryFollow.setFanid("fan");
+        queryFollow.setIsdelete(0);
 
         List<TFollow> list1 = ts.getFollowListByParam(queryFollow, null, null);
         for(TFollow x : list1){

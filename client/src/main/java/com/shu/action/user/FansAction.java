@@ -28,6 +28,12 @@ public class FansAction {
     public String follow(TFollow tFollow){
         JSONObject resObj = new JSONObject();
 
+        //自己不能关注自己
+        if(tFollow.getFanid().equals(tFollow.getFollowid())){
+            resObj.put("status", Const.STATUS_ERROR);
+            return resObj.toString();
+        }
+
         //查询是否已有此数据
         List<TFollow> list1 = tFollowService.getFollowListByParam(tFollow, null, null);
         if(list1.size() > 0){

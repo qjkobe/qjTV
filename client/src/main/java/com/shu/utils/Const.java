@@ -29,4 +29,17 @@ public class Const {
      * 存在状态
      */
     public static final String STATUS_EXIST = "exist";
+
+    /**
+     * 已登录
+     */
+    public static final String STATUS_HAVE_LOGIN = "islogin";
+
+    /**
+     * 未登录
+     */
+    public static final String STATUS_NOT_LOGIN = "nologin";
+
+
+
 }

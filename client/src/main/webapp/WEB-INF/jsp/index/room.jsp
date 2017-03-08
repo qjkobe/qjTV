@@ -32,6 +32,8 @@
                         if(temp.status == "success"){
                             alert("关注成功");
                             history.go(0);
+                        }else if(temp.status == "error"){
+                            alert("自己不能关注自己");
                         }
                     },
                     error: function(data){
