@@ -48,6 +48,7 @@
                     type: "POST",
                     url: "/fan/unfollow",
                     data: {
+                        id: "${followId}",
                         followid: "${liveroom.uid}",
                         fanid: "${userinfo.uid}"
                     },

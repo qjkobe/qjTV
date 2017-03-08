@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * 关注
  * Created by Administrator on 2017/3/7.
@@ -25,6 +27,17 @@ public class FansAction {
     @ResponseBody
     public String follow(TFollow tFollow){
         JSONObject resObj = new JSONObject();
+
+        //查询是否已有此数据
+        List<TFollow> list1 = tFollowService.getFollowListByParam(tFollow, null, null);
+        if(list1.size() > 0){
+            TFollow resultFollow = list1.get(0);
+            resultFollow.setIsdelete(0);
+            tFollowService.modifyFollow(resultFollow);
+            resObj.put("status", Const.STATUS_SUCCESS);
+            return resObj.toString();
+        }
+
         tFollow.setId(UUID.getID());
         //下次取关，不删除此数据，直接设置为1
         tFollow.setIsdelete(0);

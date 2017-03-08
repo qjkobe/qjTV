@@ -141,11 +141,12 @@ public class IndexAction {
             tFollow.setFanid(user.getId());
             tFollow.setFollowid(room.getUid());
             List<TFollow> list3 = tFollowService.getFollowListByParam(tFollow, null, null);
-            if(list3.size() == 0){
+            if(list3.size() == 0 || list3.get(0).getIsdelete() == 1){
                 //未关注
                 model.addAttribute("isFollowed", "n");
             }else{
                 model.addAttribute("isFollowed", "y");
+                model.addAttribute("followId", list3.get(0).getId());
             }
 
             model.addAttribute("islogin", "y");
