@@ -115,7 +115,7 @@ public class IndexAction {
 
         //把主播的信息也加入model
         TUserInfo queryUser = new TUserInfo();
-        queryRoom.setUid(room.getUid());
+        queryUser.setUid(room.getUid());
         List<TUserInfo> list2 = tUserInfoService.getUserinfoListByParam(queryUser, null, null);
         if(list2.size() == 0){
             //这里主播不存在是不科学的
@@ -132,7 +132,7 @@ public class IndexAction {
             TUserInfo userInfo = tUserInfoService.getUserinfoListByParam(queryInfo, null, null).get(0);
 
             //如果是直播主，直接去指定页面：
-            if(userInfo.getId().equals(room.getUid())){
+            if(user.getId().equals(room.getUid())){
                 return "redirect:/user/myZhibo";
             }
 

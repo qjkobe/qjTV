@@ -43,27 +43,24 @@
 </nav>
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <c:if test="${liveroom == 'none'}">
-                当前没有任何直播
-            </c:if>
-
-            <ul class="" id="">
-                <%--获得直播间，每获取四个，就增加一个li--%>
-                <c:forEach items="${liverooms}" var="item" varStatus="st">
-                    <c:if test="${st.count % 4==1}">
-                        <li>
-                    </c:if>
-                    <a href="/index/toRoom/${item.roomnum}" title="点击进入直播间">
-                        <img src="${ctx}/upload/cover/${item.img}" alt="点击进入直播间">
-                    </a><br>
-                    <strong>${item.title}</strong>
-                    <c:if test="${st.count % 4==0}">
-                        </li>
-                    </c:if>
-                </c:forEach>
-            </ul>
-        </div>
+        <c:if test="${liveroom == 'none'}">
+            当前没有任何直播
+        </c:if>
+        <ul class="list-group">
+            <%--获得直播间，每获取四个，就增加一个li--%>
+            <c:forEach items="${liverooms}" var="item" varStatus="st">
+                <c:if test="${st.count % 4==1}">
+                </c:if>
+                    <li class="col-md-3 col-sm-3 list-group-item">
+                        <a href="/index/toRoom/${item.roomnum}" title="点击进入直播间">
+                            <img src="${ctx}/upload/cover/${item.img}" width="270" height="180" alt="点击进入直播间">
+                        </a>
+                        <strong>${item.title}</strong>
+                    </li>
+                <c:if test="${st.count % 4==0}">
+                </c:if>
+            </c:forEach>
+        </ul>
     </div>
 </div>
 </body>
