@@ -106,7 +106,7 @@
 </nav>
 <button id="myFollow">我的关注</button>
 <div class="hidden" id="followList">
-    <div id="noFollow hidden">
+    <div id="noFollow" class="hidden">
         还没有关注过主播
     </div>
     <div id="followed">

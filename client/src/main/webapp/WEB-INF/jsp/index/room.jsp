@@ -12,7 +12,30 @@
     <title>Title</title>
     <%@include file="../commons/headjs.jsp"%>
     <link rel="stylesheet" href="${ctx}/theme/css/style.min.css" />
-    <script type="text/javascript" src="${ctx}/theme/flowplayer/flowplayer-3.2.8.min.js"></script>
+    <link rel="stylesheet" href="${ctx}/theme/js/video-js/video-js.min.css">
+
+    <style type="text/css">
+        .container-fluid {
+            padding: 0px;
+        }
+
+        .container {
+            padding: 0px;
+        }
+
+        .my-col {
+            padding: 0px;
+        }
+
+        .row {
+            margin: 0px;
+        }
+
+    </style>
+
+    <script src="${ctx}/theme/js/video-js/ie8/videojs-ie8.min.js"></script>
+    <script src="${ctx}/theme/js/video-js/video.min.js"></script>
+    <script src="${ctx}/theme/js/video-js/videojs-contrib-hls.min.js"></script>
     <script type="text/javascript" src="${ctx}/theme/js/socket.io.js"></script>
     <script src="https://rawgit.com/yunba/yunba-javascript-sdk/master/yunba-js-sdk.js"></script>
     <script src="${ctx}/theme/js/CommentCoreLibrary.min.js"></script>
@@ -24,6 +47,15 @@
     $(function(){
         //弹幕
         init();
+        videojs("live-video", {
+            "techOrder": ["flash", "html5"],
+            "controls": "false",
+            "autoplay": "true",
+            "preload": "auto"
+        }, function() {
+            var player = this;
+            player.play();
+        });
 
         window.yunba = new Yunba({
             server: 'sock.yunba.io',
@@ -67,7 +99,7 @@
 
         $("#pushTxt").click(function(){
             var bullet = {
-                "mode": 4,
+                "mode": 2,
                 "text": "test",
                 "color": "ff0000",
                 "dur": 4000
@@ -83,7 +115,7 @@
                         }
                     }
             );
-        })
+        });
 
         $("#follow").click(function(){
             if("${islogin}" == "n"){
@@ -210,32 +242,24 @@
     <button id="pushTxt">发送弹幕</button>
     <br>
 </div>
-<div id='my-player' class='abp'>
-    <div id='my-comment-stage'>
-    <!-- this A tag is where your Flowplayer will be placed. it can be anywhere -->
-    <a
-            href="#"
-            style="display:block;width:720px;height:576px"
-            id="player">
-    </a>
-    <!-- this will install flowplayer inside previous A- tag. -->
+<div class="container-fluid">
+
+    <div class="row">
+        <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
+        <div class="col-lg-6 col-md-6 col-xs-12 my-col">
+            <div id='my-player' class='abp'>
+                <div id='my-comment-stage' class='container'>
+                    <video id="live-video" class="video-js vjs-default-skin vjs-big-play-centered" webkit-playsinline style="display: none">
+                        <source src="rtmp://115.159.62.204:1935/${liveroom.app}/${liveroom.stream}" type="rtmp/flv">
+                        <source src="http://live.lettuceroot.com/yunba/live-demo.m3u8" type="application/x-mpegURL">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
     </div>
 </div>
-<script>
-    flowplayer("player", "${ctx}/theme/flowplayer/flowplayer-3.2.8.swf",{
-        clip: {
-            url: '${liveroom.stream}', //流名称
-            provider: 'rtmp',
-            live: true,
-        },
-        plugins: {
-            rtmp: {
-                url: '${ctx}/theme/flowplayer/flowplayer.rtmp-3.2.8.swf',
-                netConnectionUrl: 'rtmp://115.159.62.204:1935/${liveroom.app}/' //服务器地址
-            }
-        }
-    });
-</script>
+
 
 <p>
     <%--Sample RTMP URL (Live) is "rtmp://115.159.62.204:1935/qunima/123"--%>
