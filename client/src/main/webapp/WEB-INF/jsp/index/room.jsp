@@ -42,9 +42,9 @@
 </head>
 <script>
     var APPKEY = '58c605609bdcd1b36dfb9ff1';
-    var TOPIC_BULLET = 'bullet';
+    var TOPIC_BULLET = '${liveroom.roomnum}bullet';
     var TOPIC_LIKE = 'like';
-    var TOPIC_STAT = 'stat';
+    var TOPIC_STAT = '${liveroom.roomnum}stat';
     var TEXTS = ['♪', '♩', '♭', '♬'];
 
     $(function(){
@@ -111,7 +111,7 @@
                                                                                     yunba_sub_ok();
                                                                                     // msg_notify('success', '连接服务器成功~');
 
-                                                                                    yunba.subscribe_presence({'topic': 'stat'}, function (success, msg) {
+                                                                                    yunba.subscribe_presence({'topic': TOPIC_STAT}, function (success, msg) {
                                                                                         if (!success) {
                                                                                             console.log('subscribed');
                                                                                         }
@@ -187,14 +187,6 @@
                         }
                     }
             );
-        });
-
-        $("#getPresence").click(function(){
-            yunba.subscribe_presence({'topic': 'stat'}, function (success, msg) {
-                if (!success) {
-                    console.log(msg);
-                }
-            });
         });
 
         $("#follow").click(function(){
@@ -292,7 +284,6 @@
             $('#like-number').text(num);
             show_like_animate();
         } else if (data.topic === TOPIC_STAT) {
-            alert(1);
             // 在线信息
             var msg = JSON.parse(data.msg);
             var num = msg.presence;
@@ -306,6 +297,27 @@
 
             num = msg.like;
             $('#like-number').text(num);
+        } else if (data.topic === TOPIC_STAT + '/p') {
+            var msg = JSON.parse(data.msg);
+            if(msg.action == 'offline'){
+                var stat = {
+                    "presence": parseInt($('#online-number').text()) - 1
+                }
+            }else if(msg.action == 'join'){
+                var stat = {
+                    "presence": parseInt($('#online-number').text()) + 1
+                }
+            }
+            yunba.publish({
+                        topic: TOPIC_STAT,
+                        msg: JSON.stringify(stat)
+                    },
+                    function(success, msg) {
+                        if (!success) {
+                            console.log(msg);
+                        }
+                    }
+            );
         }
     }
     function yunba_sub_ok() {
@@ -396,9 +408,8 @@
 <button type="button" class="btn btn-success disabled my-btn-block">
     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     在线
-    <span id="online-number" class="badge"></span>
+    <span id="online-number" class="badge">1</span>
 </button>
-<button id="getPresence">获取在线人数</button>
 <div class="container-fluid">
 
     <div class="row">
