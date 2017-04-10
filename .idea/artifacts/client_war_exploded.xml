@@ -42,6 +42,8 @@
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.2" />
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.15" />
           <element id="file-copy" path="$PROJECT_DIR$/client/src/main/webapp/WEB-INF/libs/ganymed-ssh2-build210.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/client/src/main/webapp/WEB-INF/libs/jedis-2.6.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/client/src/main/webapp/WEB-INF/libs/commons-pool2-2.0.jar" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -9,12 +9,15 @@ import com.shu.services.follow.TFollowService;
 import com.shu.services.live.TLiveRoomService;
 import com.shu.services.user.TUserInfoService;
 import com.shu.utils.Const;
+import com.shu.utils.JedisPoolUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,7 +76,6 @@ public class IndexAction {
         return "index/index";
     }
 
-
     /**
      * 直播页显示所有开播的直播。
      */
@@ -92,6 +94,29 @@ public class IndexAction {
         }
         model.addAttribute("liverooms", list1);
         return "index/live";
+    }
+
+    /**
+     * 获取直播间人数
+     */
+    @RequestMapping(value = "getOnlineNum", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String getOnlineNum(String roomnum, String onlinenum){
+        JSONObject resObj = new JSONObject();
+        Jedis jedis = JedisPoolUtils.getJedis();
+        try {
+            onlinenum = jedis.get(roomnum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                JedisPoolUtils.returnRes(jedis);
+            }
+        }
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        resObj.put("onlinenum", onlinenum);
+        return resObj.toString();
     }
 
     /**
@@ -120,24 +145,34 @@ public class IndexAction {
 
         //遍历list查出所有人的直播间
         TLiveRoom queryRoom = new TLiveRoom();
+        List<TLiveRoom> kaiboList = new ArrayList<>();
+        List<TLiveRoom> weikaiboList = new ArrayList<>();
         for(int i = 0; i < list2.size(); i++){
             queryRoom.setUid(list2.get(i).getFollowid());
             //未开播
             queryRoom.setIslive(1);
             List<TLiveRoom> list3 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
             if(list3.size() != 0){
-                resObj.put("kaibos", list3);
-            }else{
-                resObj.put("kaibos", 0);
+                kaiboList.add(list3.get(0));
             }
             //已开播
             queryRoom.setIslive(0);
             List<TLiveRoom> list4 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
             if(list4.size() != 0){
-                resObj.put("weikaibos", list4);
-            }else{
-                resObj.put("weikaibos", 0);
+                weikaiboList.add(list4.get(0));
             }
+        }
+
+        if(kaiboList.size() != 0){
+            resObj.put("kaibos", kaiboList);
+        }else{
+            resObj.put("kaibos", 0);
+        }
+
+        if(weikaiboList.size() != 0){
+            resObj.put("weikaibos", weikaiboList);
+        }else{
+            resObj.put("weikaibos", 0);
         }
 
         resObj.put("status", Const.STATUS_SUCCESS);

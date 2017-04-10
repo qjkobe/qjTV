@@ -13,10 +13,12 @@ import com.shu.services.live.TRoomManageService;
 import com.shu.services.test.TestService;
 import com.shu.services.user.TUserInfoService;
 import com.shu.services.user.TUserService;
+import com.shu.utils.JedisPoolUtils;
 import com.shu.utils.UUID;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
 
@@ -143,6 +145,25 @@ public class JunitTest {
         List<TRoomManage> list1 = ts.getRManageListByParam(queryBan, null, null);
         for(TRoomManage x : list1){
             System.out.println(x.getRid());
+        }
+    }
+
+    /**
+     * 测试Jedis
+     * 2017年3月1日 15:55:22测试通过
+     */
+    @Test
+    public void TestJedis(){
+        Jedis jedis = JedisPoolUtils.getJedis();
+        try {
+            jedis.set("test", Integer.toString(1));
+            System.out.println(jedis.get("test"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                JedisPoolUtils.returnRes(jedis);
+            }
         }
     }
 

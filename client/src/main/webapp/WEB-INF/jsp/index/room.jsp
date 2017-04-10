@@ -303,10 +303,49 @@
                 var stat = {
                     "presence": parseInt($('#online-number').text()) - 1
                 }
+                //存入redis
+                $.ajax({
+                    type: "POST",
+                    url: "/live/modifyOnlineNum",
+                    data: {
+                        roomnum: "${liveroom.roomnum}",
+                        onlinenum: parseInt($('#online-number').text()) - 1
+                    },
+                    dataType: "json",
+                    success: function(data){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            //alert("");
+                        }
+                    },
+                    error: function(data){
+                        alert("系统错误");
+                    }
+                });
+
             }else if(msg.action == 'join'){
                 var stat = {
                     "presence": parseInt($('#online-number').text()) + 1
                 }
+                //存入redis
+                $.ajax({
+                    type: "POST",
+                    url: "/live/modifyOnlineNum",
+                    data: {
+                        roomnum: "${liveroom.roomnum}",
+                        onlinenum: parseInt($('#online-number').text()) + 1
+                    },
+                    dataType: "json",
+                    success: function(data){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            //alert("");
+                        }
+                    },
+                    error: function(data){
+                        alert("系统错误");
+                    }
+                });
             }
             yunba.publish({
                         topic: TOPIC_STAT,

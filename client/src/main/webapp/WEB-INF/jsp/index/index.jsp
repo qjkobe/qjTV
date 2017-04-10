@@ -45,7 +45,7 @@
                                 $("#kaibos").html(result1);
                             }
                             if(temp.weikaibos == 0){
-                                $("#weikaibos").html("还没有未关注的主播开播");
+                                $("#weikaibos").html("还没有关注的主播未开播");
                             }else{
                                 var result2 = "";
                                 result2 += "<ul>";

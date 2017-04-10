@@ -6,11 +6,13 @@ import com.shu.db.model.live.TLiveRoom;
 import com.shu.db.model.user.TUser;
 import com.shu.services.live.TLiveRoomService;
 import com.shu.utils.Const;
+import com.shu.utils.JedisPoolUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -51,6 +53,30 @@ public class LiveAction {
         resObj.put("status", Const.STATUS_SUCCESS);
         return resObj.toString();
     }
+
+    /**
+     * 直播间人数变更
+     */
+    @RequestMapping(value = "modifyOnlineNum", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String modifyOnlineNum(String roomnum, String onlinenum){
+        JSONObject resObj = new JSONObject();
+        Jedis jedis = JedisPoolUtils.getJedis();
+        try {
+            jedis.set(roomnum, onlinenum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                JedisPoolUtils.returnRes(jedis);
+            }
+        }
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        return resObj.toString();
+    }
+
+
 
     @RequestMapping(value = "setCover", produces = "text/html;charset=UTF-8")
     @ResponseBody

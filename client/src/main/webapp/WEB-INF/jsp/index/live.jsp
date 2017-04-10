@@ -12,6 +12,11 @@
     <title>所有直播-qjTV</title>
     <%@include file="../commons/headjs.jsp"%>
 </head>
+<script>
+    $(function(){
+
+    })
+</script>
 <body>
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
@@ -56,6 +61,26 @@
                             <img src="${ctx}/upload/cover/${item.img}" width="270" height="180" alt="点击进入直播间">
                         </a>
                         <strong>${item.title}</strong>
+                        <br><strong id="${item.roomnum}online">0</strong>
+                        <script>
+                            $.ajax({
+                                type: "POST",
+                                url: "/index/getOnlineNum",
+                                data: {
+                                    roomnum: "${item.roomnum}"
+                                },
+                                dataType: "json",
+                                success: function(data){
+                                    temp = eval(data);
+                                    if(temp.status == "success"){
+                                        $("#${item.roomnum}online").html(temp.onlinenum);
+                                    }
+                                },
+                                error: function(data){
+                                    alert("系统错误");
+                                }
+                            });
+                        </script>
                     </li>
                 <c:if test="${st.count % 4==0}">
                 </c:if>
