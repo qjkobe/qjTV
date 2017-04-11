@@ -39,14 +39,24 @@ public class LoginAction {
     @ResponseBody
     public String login(TUser user, HttpSession session){
         JSONObject jsonObject = new JSONObject();
-        List<TUser> list1 = tUserService.getUserListByParam(user, null, null);
+        if(user.getUsername() == null){
+            jsonObject.put("status", Const.STATUS_FAIL);
+            return jsonObject.toString();
+        }
+        TUser queryUser = new TUser();
+        queryUser.setUsername(user.getUsername());
+        List<TUser> list1 = tUserService.getUserListByParam(queryUser, null, null);
         if(list1.size() == 0){
             jsonObject.put("status", Const.STATUS_FAIL);
             return jsonObject.toString();
         }
-        session.setAttribute("user", list1.get(0));
-        jsonObject.put("status", Const.STATUS_SUCCESS);
-        jsonObject.put("userid", list1.get(0).getId());
+        if(list1.get(0).getPassword().equals(user.getPassword())){
+            jsonObject.put("status", Const.STATUS_SUCCESS);
+            jsonObject.put("userid", list1.get(0).getId());
+            session.setAttribute("user", list1.get(0));
+            return jsonObject.toString();
+        }
+        jsonObject.put("status", Const.STATUS_FAIL);
         return jsonObject.toString();
     }
 
