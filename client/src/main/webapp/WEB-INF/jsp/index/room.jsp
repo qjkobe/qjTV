@@ -48,6 +48,70 @@
     var TEXTS = ['♪', '♩', '♭', '♬'];
 
     $(function(){
+        //获得礼物榜
+        $.ajax({
+            type: "POST",
+            url: "/gift/getGift",
+            data: {
+                zhuboid: "${liveroom.uid}"
+            },
+            dataType: "json",
+            success: function(data){
+                temp = eval(data);
+                if(temp.status == "fail"){
+                    alert("不存在的");
+                }else if(temp.status == "success"){
+                    giftList = temp.giftList;
+                    for(i = 0; i < 3; i++){
+                        var sendid = giftList[i].sendid;
+                        $.ajax({
+                            type: "POST",
+                            url: "/index/getnick",
+                            data: {
+                                uid: sendid
+                            },
+                            async:false,
+                            dataType: "json",
+                            success: function(data){
+                                temp2 = eval(data);
+                                if(temp2.status == "success"){
+                                    nickname = temp2.nickname;
+                                }
+                            },
+                            error: function(data){
+                                alert("系统错误");
+                            }
+                        });
+                        giftlistStr = "<div><b>" + nickname + "贡献值：" + giftList[i].total + "</b></div>";
+                        $("#gift-list").append(giftlistStr);
+                    }
+                }
+            },
+            error: function(data){
+                alert("系统错误");
+            }
+        });
+
+        //获得关注数
+        $.ajax({
+            type: "POST",
+            url: "/fan/getFollowNum",
+            data: {
+                zhuboid: "${liveroom.uid}"
+            },
+            async: false,
+            dataType: "json",
+            success: function(data){
+                temp2 = eval(data);
+                if(temp2.status == "success"){
+                    $("#followNum").html(temp2.followNum);
+                }
+            },
+            error: function(data){
+                alert("系统错误");
+            }
+        });
+
         //弹幕
         init();
         videojs("live-video", {
@@ -242,6 +306,57 @@
                 });
             }
         });
+
+        $(".gift").click(function(){
+            giftvalue = $(this).data("value");
+            giftcount = $(this).data("count");
+            giftname = $(this).html();
+            $.ajax({
+                type: "POST",
+                url: "/gift/sendGift",
+                data: {
+                    zhuboid: "${liveroom.uid}",
+                    giftNum: giftcount,
+                    giftValue: giftvalue
+                },
+                async:false,
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "nologin"){
+                        alert("请先登录");
+                    }else if(temp.status == "success"){
+                        alert("送礼成功");
+                        giftinfo = temp.giftInfo;
+
+                        var gift = {
+                            "giftinfo": giftinfo,
+                            "giftname": giftname,
+                        };
+
+                        yunba.publish({
+                                    topic: TOPIC_LIKE,
+                                    msg: JSON.stringify(gift)
+                                },
+                                function(success, msg) {
+                                    if (!success) {
+                                        console.log(msg);
+                                    }
+                                }
+                        );
+                    }else if(temp.status == "fail"){
+                        alert("不能给自己送礼");
+                    }else if(temp.status == "noaccount"){
+                        alert("您还未充值过");
+                    }else if(temp.status == "nomoney"){
+                        alert("余额不足");
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+        })
     });
 
 
@@ -280,9 +395,13 @@
             cm.send(JSON.parse(data.msg));
         } else if (data.topic === TOPIC_LIKE) {
             // 点赞
-            var num = parseInt($('#like-number').text()) + 1;
-            $('#like-number').text(num);
-            show_like_animate();
+//            var num = parseInt($('#like-number').text()) + 1;
+//            $('#like-number').text(num);
+//            show_like_animate();
+            var msg = JSON.parse(data.msg);
+            chatinfo = "<div><b>" + msg.giftinfo.sendid + "送给主播" + msg.giftname + "</b></div>";
+            $("#chat-list").append(chatinfo);
+            $("#chat-list").scrollTop(100);
         } else if (data.topic === TOPIC_STAT) {
             // 在线信息
             var msg = JSON.parse(data.msg);
@@ -419,57 +538,155 @@
     }
 
 </script>
-<body>
-<h1>主播：${zhubo.nickname}的直播间</h1>
-<h2>直播标题：${liveroom.title}</h2>
-<c:if test="${isFollowed == 'n'}">
-    <button id="follow">关注</button>
-</c:if>
-
-<c:if test="${isFollowed == 'y'}">
-    <button id="unfollow">取消关注</button>
-</c:if>
-<div>
-    <form class="form-inline">
-        <label for="bullet-type">类型</label>
-        <select id="bullet-type" class="form-control">
-            <option>下端滚动</option>
-            <option>上端滚动</option>
-            <option>底部固定</option>
-            <option>顶部固定</option>
-            <option>逆向弹幕</option>
-        </select>
-        <input type="text" id="danmuTxt">
-        <button type="button" id="pushTxt">发送弹幕</button>
-    </form>
-    <br>
+<body class="page-md page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo ">
+<%@include file="../commons/top.jsp"%>
+<div class="clearfix">
 </div>
-<button type="button" class="btn btn-success disabled my-btn-block">
-    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-    在线
-    <span id="online-number" class="badge">1</span>
-</button>
-<div class="container-fluid">
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <%@include file="../commons/left.jsp"%>
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">模态框示例</h4>
+                        </div>
+                        <div class="modal-body">
+                            Widget settings form goes here
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn blue">Save changes</button>
+                            <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 
-    <div class="row">
-        <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
-        <div class="col-lg-6 col-md-6 col-xs-12 my-col">
-            <div id='my-player' class='abp'>
-                <div id='my-comment-stage' class='container'>
-                    <video id="live-video" class="video-js vjs-default-skin vjs-big-play-centered" webkit-playsinline style="display: none">
-                        <source src="rtmp://115.159.62.204:1935/${liveroom.app}/${liveroom.stream}" type="rtmp/flv">
-                        <source src="http://live.lettuceroot.com/yunba/live-demo.m3u8" type="application/x-mpegURL">
-                    </video>
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+                所有直播 <small>我 & 你</small>
+            </h3>
+            <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="index.html">所有分类</a>
+                        <i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">守望先锋</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- END PAGE HEADER-->
+            <h1>主播：${zhubo.nickname}的直播间</h1>关注数：<strong id="followNum">0</strong>
+            <h2>直播标题：${liveroom.title}</h2>
+            <c:if test="${isFollowed == 'n'}">
+                <button id="follow">关注</button>
+            </c:if>
+
+            <c:if test="${isFollowed == 'y'}">
+                <button id="unfollow">取消关注</button>
+            </c:if>
+            <div>
+                <form class="form-inline">
+                    <label for="bullet-type">类型</label>
+                    <select id="bullet-type" class="form-control">
+                        <option>下端滚动</option>
+                        <option>上端滚动</option>
+                        <option>底部固定</option>
+                        <option>顶部固定</option>
+                        <option>逆向弹幕</option>
+                    </select>
+                    <input type="text" id="danmuTxt">
+                    <button type="button" id="pushTxt">发送弹幕</button>
+                </form>
+                <br>
+            </div>
+            <button type="button" class="btn btn-success disabled my-btn-block">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                在线
+                <span id="online-number" class="badge">1</span>
+            </button>
+            <div class="container-fluid">
+
+                <div class="row">
+                    <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
+                    <div class="col-lg-6 col-md-6 col-xs-12 my-col">
+                        <div id='my-player' class='abp'>
+                            <div id='my-comment-stage' class='container'>
+                                <video id="live-video" class="video-js vjs-default-skin vjs-big-play-centered" webkit-playsinline style="display: none">
+                                    <source src="rtmp://115.159.62.204:1935/${liveroom.app}/${liveroom.stream}" type="rtmp/flv">
+                                    <source src="http://live.lettuceroot.com/yunba/live-demo.m3u8" type="application/x-mpegURL">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-12 my-col">
+                        <div id='gift-list' style="height:200px;">
+
+                        </div>
+                        <div id="chat-list" style="height:250px;line-height:50px;overflow:auto;overflow-x:hidden;">
+
+                        </div>
+                    </div>
                 </div>
             </div>
+            <button class="gift" data-value="500" data-count="5000">火箭</button>
+            <button class="gift" data-value="100" data-count="1000">飞机</button>
+            <button class="gift" data-value="10" data-count="100">自行车</button>
+            <button class="gift" data-value="1" data-count="10">遥控车</button>
+<button id="test">test</button>
+
+            <p>
+                <%--Sample RTMP URL (Live) is "rtmp://115.159.62.204:1935/qunima/123"--%>
+            </p>
+            <div class="clearfix">
+            </div>
+
         </div>
-        <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
+    </div>
+    <!-- END CONTENT -->
+
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+    <div class="page-footer-inner">
+        2014 &copy; Metronic by keenthemes. <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
+    </div>
+    <div class="scroll-to-top">
+        <i class="icon-arrow-up"></i>
     </div>
 </div>
-
-
-<p>
-    <%--Sample RTMP URL (Live) is "rtmp://115.159.62.204:1935/qunima/123"--%>
-</p>
+<!-- END FOOTER -->
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<%@include file="../commons/footjs.jsp"%>
+<script>
+    jQuery(document).ready(function() {
+        Metronic.init(); // init metronic core componets
+        Layout.init(); // init layout
+        QuickSidebar.init(); // init quick sidebar
+        Demo.init(); // init demo features
+        Index.init();
+        Index.initDashboardDaterange();
+        Index.initJQVMAP(); // init index page's custom scripts
+        Index.initCalendar(); // init index page's custom scripts
+        Index.initCharts(); // init index page's custom scripts
+        Index.initChat();
+        Index.initMiniCharts();
+        Tasks.initDashboardWidget();
+    });
+</script>
+<!-- END JAVASCRIPTS -->
 </body>
 </html>

@@ -40,6 +40,19 @@ public class Const {
      */
     public static final String STATUS_NOT_LOGIN = "nologin";
 
+    /**
+     * 无人送礼过
+     */
+    public static final String STATUS_NO_GIFT = "nogift";
 
+    /**
+     * 没有账户，请先冲第一笔
+     */
+    public static final String STATUS_NO_ACCOUNT = "noaccount";
+
+    /**
+     * 账户余额不足
+     */
+    public static final String STATUS_NO_MONEY = "nomoney";
 
 }

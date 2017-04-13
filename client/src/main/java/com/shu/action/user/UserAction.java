@@ -72,6 +72,7 @@ public class UserAction {
         return resObj.toString();
     }
 
+
     @RequestMapping(value = "uploadlogo", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String uploadLogo(MultipartFile uploadfile, HttpServletRequest request) {

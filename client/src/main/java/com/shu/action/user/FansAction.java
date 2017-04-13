@@ -79,4 +79,17 @@ public class FansAction {
             return resObj.toString();
         }
     }
+
+    @RequestMapping(value = "getFollowNum", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String getFollowNum(String zhuboid){
+        JSONObject resObj = new JSONObject();
+
+        TFollow queryFollow = new TFollow();
+        queryFollow.setFollowid(zhuboid);
+        List<TFollow> list1 = tFollowService.getFollowListByParam(queryFollow, null, null);
+        resObj.put("followNum", list1.size());
+        resObj.put("status", Const.STATUS_SUCCESS);
+        return resObj.toString();
+    }
 }

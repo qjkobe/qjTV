@@ -77,6 +77,23 @@ public class IndexAction {
     }
 
     /**
+     * 根据id获取昵称
+     * @return
+     */
+    @RequestMapping(value = "getnick", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String getnick(String uid){
+        JSONObject resObj = new JSONObject();
+        TUserInfo tUserInfo = new TUserInfo();
+        tUserInfo.setUid(uid);
+        List<TUserInfo> queryInfo = tUserInfoService.getUserinfoListByParam(tUserInfo, null, null);
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        resObj.put("nickname", queryInfo.get(0).getNickname());
+        return resObj.toString();
+    }
+
+    /**
      * 直播页显示所有开播的直播。
      */
     @RequestMapping(value = "live", produces = "text/html;charset=UTF-8")
