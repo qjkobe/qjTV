@@ -43,6 +43,7 @@
     <mvc:interceptors>
     <mvc:interceptor>
     <mvc:mapping path="/user/**" />
+    <mvc:mapping path="/manage/**" />
     <bean class="com.shu.web.interceptor.AuthorityInterceptor" />
     </mvc:interceptor>
     </mvc:interceptors>

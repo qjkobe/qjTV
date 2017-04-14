@@ -13,6 +13,7 @@ import com.shu.utils.Const;
 import com.shu.utils.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -102,7 +103,7 @@ public class GiftAction {
     }
 
     /**
-     * 查看礼物榜，如果是直播间，前端把liveroom的uid当作zhuboid传过来。如果是主播后台，就把主播的uid传过来
+     * 查看礼物榜，如果是直播间，前端把liveroom的uid当作zhuboid传过来。（如果是主播后台，就把主播的uid传过来）（先已分离此功能）
      */
     @RequestMapping(value = "getGift", produces = "text/html;charset=UTF-8")
     @ResponseBody
@@ -131,4 +132,5 @@ public class GiftAction {
 
         return resObj.toString();
     }
+
 }

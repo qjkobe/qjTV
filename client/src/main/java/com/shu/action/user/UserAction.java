@@ -55,12 +55,36 @@ public class UserAction {
             userInfo1.setHeadimg("jzm.jpg");
             tUserInfoService.addUserinfo(userInfo1);
             model.addAttribute("userinfo", userInfo1);
-            return "user/userinfo";
+            return "user/baseinfo";
         }
 
         model.addAttribute("userinfo", userInfoList.get(0));
 
-        return "user/userinfo";
+        return "user/baseinfo";
+    }
+
+    @RequestMapping(value = "userhead", produces = "text/html;charset=UTF-8")
+    public String userheadhtml(Model model, String userId, HttpServletRequest request){
+        TUser user = (TUser) request.getSession().getAttribute("user");
+
+        TUserInfo userInfo = new TUserInfo();
+        userInfo.setUid(userId);
+        List<TUserInfo> userInfoList = tUserInfoService.getUserinfoListByParam(userInfo, null, null);
+
+        //给没有userinfo的用户新建info
+        if(userInfoList.size() == 0){
+            TUserInfo userInfo1 = new TUserInfo();
+            userInfo1.setId(UUID.getID());
+            userInfo1.setUid(userId);
+            userInfo1.setHeadimg("jzm.jpg");
+            tUserInfoService.addUserinfo(userInfo1);
+            model.addAttribute("userinfo", userInfo1);
+            return "user/modifyHead";
+        }
+
+        model.addAttribute("userinfo", userInfoList.get(0));
+
+        return "user/modifyHead";
     }
 
     @RequestMapping(value = "editinfo", produces = "text/html;charset=UTF-8")

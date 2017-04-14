@@ -30,12 +30,12 @@ public class AccountAction {
      */
     @RequestMapping(value = "chongzhi", produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String chongzhi(TAccount tAccount, int jine, HttpServletRequest request){
+    public String chongzhi(int jine, HttpServletRequest request){
         TUser user = (TUser) request.getSession().getAttribute("user");
         JSONObject resObj = new JSONObject();
 
         TAccount queryAccount = new TAccount();
-        queryAccount.setUid(tAccount.getUid());
+        queryAccount.setUid(user.getId());
         List<TAccount> list1 = tAccountService.getaccountListByParam(queryAccount, null, null);
         if(list1.size() == 0){
             //没有就为他创建

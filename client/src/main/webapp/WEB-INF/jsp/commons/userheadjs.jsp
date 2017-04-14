@@ -8,7 +8,6 @@
 <link href="${ctx}/theme/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 <link href="${ctx}/theme/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
-
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
 <link href="${ctx}/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
 <link href="${ctx}/theme/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
@@ -17,15 +16,14 @@
 <!-- BEGIN PAGE STYLES -->
 <link href="${ctx}/theme/assets/admin/pages/css/tasks.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE STYLES -->
-
 <!-- BEGIN THEME STYLES -->
+<!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
 <link href="${ctx}/theme/assets/global/css/components-md.css" id="style_components" rel="stylesheet" type="text/css"/>
 <link href="${ctx}/theme/assets/global/css/plugins-md.css" rel="stylesheet" type="text/css"/>
-<link href="${ctx}/theme/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
-<link id="style_color" href="${ctx}/theme/assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css"/>
-<link href="${ctx}/theme/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+<link href="${ctx}/theme/assets/admin/layout2/css/layout.css" rel="stylesheet" type="text/css"/>
+<link href="${ctx}/theme/assets/admin/layout2/css/themes/grey.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="${ctx}/theme/assets/admin/layout2/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
-
 <link rel="shortcut icon" href="${ctx}/theme/img/jinyu.ico"/>
 <%
     String menuActive = "";

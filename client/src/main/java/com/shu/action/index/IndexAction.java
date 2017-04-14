@@ -94,6 +94,44 @@ public class IndexAction {
     }
 
     /**
+     * 根据id获取直播间号
+     * @return
+     */
+    @RequestMapping(value = "getRoomNum", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String getRoomNum(String uid){
+        JSONObject resObj = new JSONObject();
+        TLiveRoom tLiveRoom = new TLiveRoom();
+        tLiveRoom.setUid(uid);
+        List<TLiveRoom> queryRoom = tLiveRoomService.getLRoomListByParam(tLiveRoom, null, null);
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        resObj.put("roomNum", queryRoom.get(0).getRoomnum());
+        return resObj.toString();
+    }
+
+    /**
+     * 根据主播id查看有没有开播
+     * @return
+     */
+    @RequestMapping(value = "isLive", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String isLive(String uid){
+        JSONObject resObj = new JSONObject();
+        TLiveRoom tLiveRoom = new TLiveRoom();
+        tLiveRoom.setUid(uid);
+        List<TLiveRoom> queryRoom = tLiveRoomService.getLRoomListByParam(tLiveRoom, null, null);
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        if(queryRoom.get(0).getIslive() == 1){
+            resObj.put("kaibo", "Y");
+        }else{
+            resObj.put("kaibo", "N");
+        }
+        return resObj.toString();
+    }
+
+    /**
      * 直播页显示所有开播的直播。
      */
     @RequestMapping(value = "live", produces = "text/html;charset=UTF-8")
