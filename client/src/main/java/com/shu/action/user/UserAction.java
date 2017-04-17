@@ -52,6 +52,7 @@ public class UserAction {
             TUserInfo userInfo1 = new TUserInfo();
             userInfo1.setId(UUID.getID());
             userInfo1.setUid(userId);
+            userInfo1.setNickname("默认昵称");
             userInfo1.setHeadimg("jzm.jpg");
             tUserInfoService.addUserinfo(userInfo1);
             model.addAttribute("userinfo", userInfo1);

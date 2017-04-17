@@ -3,10 +3,12 @@ package com.shu.action.index;
 import com.alibaba.fastjson.JSONObject;
 import com.shu.db.model.follow.TFollow;
 import com.shu.db.model.live.TLiveRoom;
+import com.shu.db.model.live.TRoomBan;
 import com.shu.db.model.user.TUser;
 import com.shu.db.model.user.TUserInfo;
 import com.shu.services.follow.TFollowService;
 import com.shu.services.live.TLiveRoomService;
+import com.shu.services.live.TRoomBanService;
 import com.shu.services.user.TUserInfoService;
 import com.shu.utils.Const;
 import com.shu.utils.JedisPoolUtils;
@@ -36,6 +38,9 @@ public class IndexAction {
 
     @Autowired
     TFollowService tFollowService;
+
+    @Autowired
+    TRoomBanService tRoomBanService;
 
     /**
      * 首页显示一个推荐直播。
@@ -108,6 +113,39 @@ public class IndexAction {
         resObj.put("status", Const.STATUS_SUCCESS);
         resObj.put("roomNum", queryRoom.get(0).getRoomnum());
         return resObj.toString();
+    }
+
+    /**
+     * 发弹幕查看有没有登录，登录了返回用户信息，并查看有没有禁言
+     * @return
+     */
+    @RequestMapping(value = "pushTxt", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String pushTxt(String rid, HttpServletRequest request){
+        TUser user = (TUser) request.getSession().getAttribute("user");
+        JSONObject resObj = new JSONObject();
+
+        if(user == null){
+            resObj.put("userinfo", Const.STATUS_NOT_LOGIN);
+            return resObj.toString();
+        }else{
+            //查看是否禁言
+            TRoomBan tRoomBan = new TRoomBan();
+            tRoomBan.setUid(user.getId());
+            tRoomBan.setRid(rid);
+            tRoomBan.setIsdelete(0);
+            List<TRoomBan> list2 = tRoomBanService.getRoomBanListByParam(tRoomBan, null, null);
+            if(list2.size() != 0){
+                resObj.put("userinfo", Const.STATUS_BE_BANNED);
+                return resObj.toString();
+            }
+
+            TUserInfo userInfo = new TUserInfo();
+            userInfo.setUid(user.getId());
+            List<TUserInfo> list1 = tUserInfoService.getUserinfoListByParam(userInfo, null, null);
+            resObj.put("userinfo", list1.get(0));
+            return resObj.toString();
+        }
     }
 
     /**

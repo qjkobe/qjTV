@@ -7,14 +7,14 @@
     <result column="rid" property="rid" jdbcType="VARCHAR" />
     <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
-    <result column="createUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="updateUser" property="updateuser" jdbcType="VARCHAR" />
     <result column="isDelete" property="isdelete" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, rid, createTime, updateTime, createUser, isDelete
+    id, uid, rid, createTime, updateTime, updateUser, isDelete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_room_manage
     where id = #{id,jdbcType=VARCHAR}
@@ -24,12 +24,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.shu.db.model.live.TRoomManage" >
-    insert into t_room_manage (id, uid, rid, 
-      createTime, updateTime, createUser, 
-      isDelete)
-    values (#{id,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{rid,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
-      #{isdelete,jdbcType=INTEGER})
+    insert into t_room_manage (id, uid, rid,
+    createTime, updateTime, updateUser,
+    isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{rid,jdbcType=VARCHAR},
+    #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR},
+    #{isdelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.shu.db.model.live.TRoomManage" >
     insert into t_room_manage
@@ -49,8 +49,8 @@
       <if test="updatetime != null" >
         updateTime,
       </if>
-      <if test="createuser != null" >
-        createUser,
+      <if test="updateuser != null" >
+        updateUser,
       </if>
       <if test="isdelete != null" >
         isDelete,
@@ -72,8 +72,8 @@
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createuser != null" >
-        #{createuser,jdbcType=VARCHAR},
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
       </if>
       <if test="isdelete != null" >
         #{isdelete,jdbcType=INTEGER},
@@ -95,8 +95,8 @@
       <if test="updatetime != null" >
         updateTime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createuser != null" >
-        createUser = #{createuser,jdbcType=VARCHAR},
+      <if test="updateuser != null" >
+        updateUser = #{updateuser,jdbcType=VARCHAR},
       </if>
       <if test="isdelete != null" >
         isDelete = #{isdelete,jdbcType=INTEGER},
@@ -110,7 +110,7 @@
       rid = #{rid,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
       updateTime = #{updatetime,jdbcType=TIMESTAMP},
-      createUser = #{createuser,jdbcType=VARCHAR},
+      updateUser = #{updateuser,jdbcType=VARCHAR},
       isDelete = #{isdelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -129,7 +129,7 @@
       and rid = #{pojo.rid,jdbcType=VARCHAR}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
-      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}{
+      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}
     </if>
     <if test="orderObj != null">
       order by
@@ -156,7 +156,7 @@
       and rid = #{pojo.rid,jdbcType=VARCHAR}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
-      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}{
+      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}
     </if>
   </select>
 </mapper>

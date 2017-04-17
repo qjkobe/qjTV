@@ -143,7 +143,7 @@
       and name = #{pojo.code,jdbcType=VARCHAR}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
-      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}{
+      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}
     </if>
     <if test="orderObj != null">
       order by
@@ -167,7 +167,7 @@
       and age = #{pojo.age,jdbcType=INTEGER}
     </if>
     <if test="pojo != null and pojo.isdelete != null">
-      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}{
+      and isDelete = #{pojo.isdelete,jdbcType=INTEGER}
     </if>
   </select>
 </mapper>

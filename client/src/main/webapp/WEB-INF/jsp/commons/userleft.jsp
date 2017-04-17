@@ -60,8 +60,8 @@
                     <span class="selected"></span>
                 </a>
             </li>
-            <li>
-                <a href="index.html">
+            <li class='<%="fangjian".equals(menuActive) ? "active" : ""%>'>
+                <a href="/manage/fangjian">
                     <i class="icon-basket"></i>
                     <span class="title">房间管理</span>
                     <span class="selected"></span>

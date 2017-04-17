@@ -41,16 +41,17 @@
         $(".fangguan").click(function(){
             $.ajax({
                 type: "POST",
-                url: "",
+                url: "/manage/fangguan",
                 data: {
-                    id: $(this).parent().parent().children("td").eq(4).children("span").html()
+                    uid: $(this).data("uid"),
                 },
                 dataType: "json",
                 success: function(data){
                     temp = eval(data);
                     if(temp.status == "success"){
-                        alert("取关成功");
-                        history.go(0);
+                        alert("任命管理员成功");
+                    }else if(temp.status == "noaccess"){
+                        alert("你没有权限这么做");
                     }
                 },
                 error: function(data){
@@ -132,6 +133,9 @@
                                         <th class="hidden-xs">
                                             操作
                                         </th>
+                                        <th class="hidden-xs" style="display: none;">
+
+                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -144,6 +148,9 @@
                                                 0
                                             </td>
                                             <td >
+                                                真可怜啊
+                                            </td>
+                                            <td style="display: none;">
                                                 真可怜啊
                                             </td>
                                         </tr>
@@ -176,7 +183,7 @@
                                                 ${item.total}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success fangguan">任命房管</button>
+                                                <button type="button" data-uid="${item.sendid}" class="btn btn-success fangguan">任命房管</button>
                                             </td>
                                             <td style="display: none;">
                                                 <span>${item.id}</span>

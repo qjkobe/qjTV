@@ -112,17 +112,23 @@ public class JunitTest {
         ApplicationContext ctx = new ClassPathXmlApplicationContext(paths);
 
         TRoomBanService ts = (TRoomBanService) ctx.getBean("RBanService");
-        TRoomBan tRoomBan = ts.getRoomBanById("test");
-
-        System.out.println(tRoomBan.getRid());
+//        TRoomBan tRoomBan = ts.getRoomBanById("test");
+//
+//        System.out.println(tRoomBan.getRid());
 
         TRoomBan queryBan = new TRoomBan();
         queryBan.setUid("uid");
+        queryBan.setIsdelete(0);
+//        List<TRoomBan> list2 = tRoomBanService.getRoomBanListByParam(tRoomBan, null, null);
+
+//        TRoomBan queryBan = new TRoomBan();
+//        queryBan.setUid("uid");
 
         List<TRoomBan> list1 = ts.getRoomBanListByParam(queryBan, null, null);
         for(TRoomBan x : list1){
             System.out.println(x.getRid());
         }
+        System.out.println(list1.size());
     }
 
     /**

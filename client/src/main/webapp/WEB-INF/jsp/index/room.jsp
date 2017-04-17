@@ -233,24 +233,51 @@
                     break;
             }
             var text = $("#danmuTxt").val();
+            if(text == ""){
+                alert("请输入弹幕");
+                return;
+            }
 
-            var bullet = {
-                "mode": mode,
-                "text": text,
-                "color": "ffffff",
-                "dur": 4000
-            };
+            $.ajax({
+                type: "POST",
+                url: "/index/pushTxt",
+                data: {
+                    rid: "${liveroom.id}"
+                },
+                async: false,
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.userinfo == "nologin"){
+                        alert("发弹幕前请先登录");
+                    }else if(temp.userinfo == "banned"){
+                        alert("你被禁言了");
+                    }else{
+                        var bullet = {
+                            "userinfo": temp.userinfo,
+                            "mode": mode,
+                            "text": text,
+                            "color": "ffffff",
+                            "dur": 4000
+                        };
 
-            yunba.publish({
-                        topic: TOPIC_BULLET,
-                        msg: JSON.stringify(bullet)
-                    },
-                    function(success, msg) {
-                        if (!success) {
-                            console.log(msg);
-                        }
+                        yunba.publish({
+                                    topic: TOPIC_BULLET,
+                                    msg: JSON.stringify(bullet)
+                                },
+                                function(success, msg) {
+                                    if (!success) {
+                                        console.log(msg);
+                                    }
+                                }
+                        );
                     }
-            );
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+
         });
 
         $("#follow").click(function(){
@@ -298,6 +325,60 @@
                         if(temp.status == "success"){
                             alert("取关成功");
                             history.go(0);
+                        }
+                    },
+                    error: function(data){
+                        alert("系统错误");
+                    }
+                });
+            }
+        });
+
+        //禁言与房管.管理员能禁言，本人能任命房管
+        $(".jinyan").click(function(){
+            if("${islogin}" == "n"){
+                alert("请先登录！");
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "/room/banUser",
+                    data: {
+                        uid: $(this).data("uid"),
+                        rid: "${liveroom.id}"
+                    },
+                    dataType: "json",
+                    success: function(data){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            alert("禁言成功");
+                        }else if(temp.status == "noaccess"){
+                            alert("你没有权限这么做");
+                        }
+                    },
+                    error: function(data){
+                        alert("系统错误");
+                    }
+                });
+            }
+        });
+        $(".fangguan").click(function(){
+            if("${islogin}" == "n"){
+                alert("请先登录！");
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "/room/fangguan",
+                    data: {
+                        uid: $(this).data("uid"),
+                        rid: "${liveroom.id}"
+                    },
+                    dataType: "json",
+                    success: function(data){
+                        temp = eval(data);
+                        if(temp.status == "success"){
+                            alert("任命管理员成功");
+                        }else if(temp.status == "noaccess"){
+                            alert("你没有权限这么做");
                         }
                     },
                     error: function(data){
@@ -359,6 +440,58 @@
         })
     });
 
+    function jinyan(obj){
+        if("${islogin}" == "n"){
+            alert("请先登录！");
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "/room/banUser",
+                data: {
+                    uid: $(obj).data("uid"),
+                    rid: "${liveroom.id}"
+                },
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "success"){
+                        alert("禁言成功");
+                    }else if(temp.status == "noaccess"){
+                        alert("你没有权限这么做");
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+        }
+    }
+    function fangguan(obj){
+        if("${islogin}" == "n"){
+            alert("请先登录！");
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "/room/fangguan",
+                data: {
+                    uid: $(obj).data("uid"),
+                    rid: "${liveroom.id}"
+                },
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "success"){
+                        alert("任命管理员成功");
+                    }else if(temp.status == "noaccess"){
+                        alert("你没有权限这么做");
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+        }
+    }
 
     function init() {
         var player = $('#my-player');
@@ -393,6 +526,14 @@
         if (data.topic === TOPIC_BULLET) {
             // 弹幕
             cm.send(JSON.parse(data.msg));
+            var msg = JSON.parse(data.msg);
+            chatinfo = '<div><div class="btn-group btn-group-circle"><button type="button" class="btn btn-circle-right btn-primary dropdown-toggle" data-uid="' + msg.userinfo.uid + '" data-toggle="dropdown">' + msg.userinfo.nickname + '<i class="fa fa-angle-down"></i></button>'
+            chatinfo = chatinfo + '<ul class="dropdown-menu" role="menu"><li><a class="jinyan" href="javascript:;" onclick="jinyan(this)" data-uid="' + msg.userinfo.uid + '">禁言 </a></li>';
+            chatinfo = chatinfo + '<li><a class="fangguan" href="javascript:;" onclick="fangguan(this)" data-uid="' + msg.userinfo.uid + '">任命房管 </a></li></ul></div>'
+            chatinfo = chatinfo + "<b>:" + msg.text + "</b></div>";
+
+            $("#chat-list").append(chatinfo);
+            $("#chat-list").scrollTop(200);
         } else if (data.topic === TOPIC_LIKE) {
             // 点赞
 //            var num = parseInt($('#like-number').text()) + 1;
@@ -671,6 +812,8 @@
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <%@include file="../commons/footjs.jsp"%>
+
+<!-- END PAGE LEVEL SCRIPTS -->
 <script>
     jQuery(document).ready(function() {
         Metronic.init(); // init metronic core componets

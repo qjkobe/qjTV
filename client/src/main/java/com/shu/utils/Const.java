@@ -31,6 +31,11 @@ public class Const {
     public static final String STATUS_EXIST = "exist";
 
     /**
+     * 空状态
+     */
+    public static final String STATUS_EMPTY = "empty";
+
+    /**
      * 已登录
      */
     public static final String STATUS_HAVE_LOGIN = "islogin";
@@ -54,5 +59,15 @@ public class Const {
      * 账户余额不足
      */
     public static final String STATUS_NO_MONEY = "nomoney";
+
+    /**
+     * 用户被禁言
+     */
+    public static final String STATUS_BE_BANNED = "banned";
+
+    /**
+     * 用户权限不足
+     */
+    public static final String STATUS_NO_ACCESS = "noaccess";
 
 }
