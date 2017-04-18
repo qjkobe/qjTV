@@ -2,6 +2,8 @@ package com.shu.action.login;
 
 import com.alibaba.fastjson.JSONObject;
 import com.shu.db.model.user.TUser;
+import com.shu.db.model.user.TUserInfo;
+import com.shu.services.user.TUserInfoService;
 import com.shu.services.user.TUserService;
 import com.shu.utils.Const;
 import com.shu.utils.UUID;
@@ -24,6 +26,9 @@ public class LoginAction {
 
     @Autowired
     TUserService tUserService;
+
+    @Autowired
+    TUserInfoService tUserInfoService;
 
     @RequestMapping(value = "loginhtml", produces = "text/html;charset=UTF-8")
     public String loginhtml(Model model){
@@ -54,6 +59,13 @@ public class LoginAction {
             jsonObject.put("status", Const.STATUS_SUCCESS);
             jsonObject.put("userid", list1.get(0).getId());
             session.setAttribute("user", list1.get(0));
+
+            //用户信息
+            TUserInfo tUserInfo = new TUserInfo();
+            tUserInfo.setUid(list1.get(0).getId());
+            List<TUserInfo> list2 = tUserInfoService.getUserinfoListByParam(tUserInfo, null, null);
+            session.setAttribute("infoinfo", list2.get(0));
+
             return jsonObject.toString();
         }
         jsonObject.put("status", Const.STATUS_FAIL);
@@ -65,6 +77,7 @@ public class LoginAction {
     public String logout(TUser user, HttpSession session){
         JSONObject jsonObject = new JSONObject();
         session.removeAttribute("user");
+        session.removeAttribute("infoinfo");
 
         jsonObject.put("status", Const.STATUS_SUCCESS);
         return jsonObject.toString();

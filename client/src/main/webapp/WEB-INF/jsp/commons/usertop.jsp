@@ -6,7 +6,7 @@
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="index.html">
-                <img src="${ctx}/theme/assets/admin/layout2/img/logo-default.png" alt="logo" class="logo-default"/>
+                <img src="${ctx}/theme/assets/admin/layout2/img/qjlogo2.png" alt="logo" class="logo-default"/>
             </a>
             <div class="menu-toggler sidebar-toggler">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -106,36 +106,27 @@
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-bell"></i>
-						<span class="badge badge-default">
-						7 </span>
+						<span class="badge badge-default kaibos">
+						0 </span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="external">
-                                <h3><span class="bold">12 pending</span> notifications</h3>
-                                <a href="extra_profile.html">view all</a>
+                                <h3><span class="bold kaibos">0 </span> 已开播</h3>
+                                <%--<a href="extra_profile.html">view all</a>--%>
                             </li>
                             <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                <ul id="kaibos" class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                                     <li>
                                         <a href="javascript:;">
-                                            <span class="time">just now</span>
+                                            <span class="time">嘤嘤嘤</span>
 										<span class="details">
 										<span class="label label-sm label-icon label-success">
-										<i class="fa fa-plus"></i>
+										<i class="fa fa-bullhorn"></i>
 										</span>
-										New user registered. </span>
+										稍等，还在加载 </span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">3 mins</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-danger">
-										<i class="fa fa-bolt"></i>
-										</span>
-										Server #12 overloaded. </span>
-                                        </a>
-                                    </li>
+
                                 </ul>
                             </li>
                         </ul>
@@ -143,92 +134,86 @@
                     <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN INBOX DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="icon-envelope-open"></i>
-						<span class="badge badge-default">
-						4 </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="external">
-                                <h3>You have <span class="bold">7 New</span> Messages</h3>
-                                <a href="page_inbox.html">view all</a>
-                            </li>
-                            <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
-                                    <li>
-                                        <a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="${ctx}/theme/assets/admin/layout3/img/avatar2.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Lisa Wong </span>
-										<span class="time">Just Now </span>
-										</span>
-										<span class="message">
-										Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="${ctx}/theme/assets/admin/layout3/img/avatar3.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Richard Doe </span>
-										<span class="time">16 mins </span>
-										</span>
-										<span class="message">
-										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-                                        </a>
-                                    </li>
+                    <%--收件箱待做--%>
+                    <%--<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">--%>
+                        <%--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">--%>
+                            <%--<i class="icon-envelope-open"></i>--%>
+						<%--<span class="badge badge-default">--%>
+						<%--4 </span>--%>
+                        <%--</a>--%>
+                        <%--<ul class="dropdown-menu">--%>
+                            <%--<li class="external">--%>
+                                <%--<h3>You have <span class="bold">7 New</span> Messages</h3>--%>
+                                <%--<a href="page_inbox.html">view all</a>--%>
+                            <%--</li>--%>
+                            <%--<li>--%>
+                                <%--<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">--%>
+                                    <%--<li>--%>
+                                        <%--<a href="inbox.html?a=view">--%>
+										<%--<span class="photo">--%>
+										<%--<img src="${ctx}/theme/assets/admin/layout3/img/avatar2.jpg" class="img-circle" alt="">--%>
+										<%--</span>--%>
+										<%--<span class="subject">--%>
+										<%--<span class="from">--%>
+										<%--Lisa Wong </span>--%>
+										<%--<span class="time">Just Now </span>--%>
+										<%--</span>--%>
+										<%--<span class="message">--%>
+										<%--Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>--%>
+                                        <%--</a>--%>
+                                    <%--</li>--%>
+                                    <%--<li>--%>
+                                        <%--<a href="inbox.html?a=view">--%>
+										<%--<span class="photo">--%>
+										<%--<img src="${ctx}/theme/assets/admin/layout3/img/avatar3.jpg" class="img-circle" alt="">--%>
+										<%--</span>--%>
+										<%--<span class="subject">--%>
+										<%--<span class="from">--%>
+										<%--Richard Doe </span>--%>
+										<%--<span class="time">16 mins </span>--%>
+										<%--</span>--%>
+										<%--<span class="message">--%>
+										<%--Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>--%>
+                                        <%--</a>--%>
+                                    <%--</li>--%>
 
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                                <%--</ul>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
                     <!-- END INBOX DROPDOWN -->
 
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" class="img-circle" src="${ctx}/theme/assets/admin/layout2/img/avatar3_small.jpg"/>
+                            <img alt="" class="img-circle" src="${ctx}/upload/logo/${infoinfo.headimg}"/>
 						<span class="username username-hide-on-mobile">
-						Nick </span>
+                        ${infoinfo.nickname} </span>
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="extra_profile.html">
-                                    <i class="icon-user"></i> My Profile </a>
+                                <a href="/user/userinfo">
+                                    <i class="icon-user"></i> 我的资料 </a>
                             </li>
+
+                            <%--<li>--%>
+                                <%--<a href="inbox.html">--%>
+                                    <%--<i class="icon-envelope-open"></i> My Inbox <span class="badge badge-danger">--%>
+								<%--3 </span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
                             <li>
-                                <a href="page_calendar.html">
-                                    <i class="icon-calendar"></i> My Calendar </a>
-                            </li>
-                            <li>
-                                <a href="inbox.html">
-                                    <i class="icon-envelope-open"></i> My Inbox <span class="badge badge-danger">
-								3 </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="page_todo.html">
-                                    <i class="icon-rocket"></i> My Tasks <span class="badge badge-success">
-								7 </span>
+                                <a href="/manage/getFollow">
+                                    <i class="icon-rocket"></i> 我的关注 <span class="badge badge-success guanzhus">
+								0 </span>
                                 </a>
                             </li>
                             <li class="divider">
                             </li>
                             <li>
-                                <a href="extra_lock.html">
-                                    <i class="icon-lock"></i> Lock Screen </a>
-                            </li>
-                            <li>
-                                <a href="login.html">
+                                <a href="" class="logout">
                                     <i class="icon-key"></i> Log Out </a>
                             </li>
                         </ul>
@@ -236,8 +221,8 @@
                     <!-- END USER LOGIN DROPDOWN -->
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li id="logout" class="dropdown dropdown-extended quick-sidebar-toggler">
-                        <span class="sr-only">Toggle Quick Sidebar</span>
+                    <li class="dropdown dropdown-extended quick-sidebar-toggler logout">
+                        <span class="sr-only">log out</span>
                         <i class="icon-logout"></i>
                     </li>
                     <!-- END USER LOGIN DROPDOWN -->
@@ -252,7 +237,55 @@
 <!-- END HEADER -->
 <script>
     $(function() {
-        $("#logout").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/index/myFollow",
+            dataType: "json",
+            success: function(data){
+                temp = eval(data);
+                if(temp.status == "success"){
+                    $(".kaibos").html(temp.kaibos.length);
+                    $(".guanzhus").html(temp.followList.length);
+                    //拼接字符串
+                    var result1 = "";
+                    for (i = 0; i < temp.kaibos.length; i++) {
+                        result1 += '<li><a href="/index/toRoom/' + temp.kaibos[i].roomnum + '" title="点击进入直播间">';
+                        $.ajax({
+                            type: "POST",
+                            url: "/index/getnick",
+                            data: {
+                                uid: temp.kaibos[i].uid
+                            },
+                            async:false,
+                            dataType: "json",
+                            success: function(data){
+                                temp2 = eval(data);
+                                if(temp2.status == "success"){
+                                    nickname = temp2.nickname;
+                                }
+                            },
+                            error: function(data){
+                                alert("系统错误");
+                            }
+                        });
+
+                        result1 += '<span class="time">' + nickname + '</span>';
+                        result1 += '<span class="details"><span class="label label-sm label-icon label-success"><i class="fa fa-bullhorn"></i></span>';
+                        result1 += temp.kaibos[i].title + '</span>';
+                        result1 += '</a></li>';
+                    }
+                    $("#kaibos").html(result1);
+
+                }else if(temp.status == "nologin"){
+                    alert("请先登录");
+                }
+            },
+            error: function(data){
+                alert("系统错误");
+            }
+        });
+
+        $(".logout").click(function () {
             $.ajax({
                 type: "POST",
                 url: "/login/logout",

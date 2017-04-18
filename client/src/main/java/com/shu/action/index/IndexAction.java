@@ -99,6 +99,23 @@ public class IndexAction {
     }
 
     /**
+     * 根据id获取头像
+     * @return
+     */
+    @RequestMapping(value = "gethead", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String gethead(String uid){
+        JSONObject resObj = new JSONObject();
+        TUserInfo tUserInfo = new TUserInfo();
+        tUserInfo.setUid(uid);
+        List<TUserInfo> queryInfo = tUserInfoService.getUserinfoListByParam(tUserInfo, null, null);
+
+        resObj.put("status", Const.STATUS_SUCCESS);
+        resObj.put("headimg", queryInfo.get(0).getHeadimg());
+        return resObj.toString();
+    }
+
+    /**
      * 根据id获取直播间号
      * @return
      */
@@ -218,7 +235,6 @@ public class IndexAction {
     @RequestMapping(value = "myFollow", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String myFollow(Model model, HttpServletRequest request){
-
         TUser user = (TUser) request.getSession().getAttribute("user");
         JSONObject resObj = new JSONObject();
         if(user == null){

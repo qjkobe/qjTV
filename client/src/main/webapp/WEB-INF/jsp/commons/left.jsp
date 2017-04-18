@@ -37,63 +37,44 @@
                 </form>
                 <!-- END RESPONSIVE QUICK SEARCH FORM -->
             </li>
-            <li class="start active open">
-                <a href="javascript:;">
+            <li class="start <%="live".equals(menuActive) ? "active" : ""%>">
+                <a href="/index/live">
                     <i class="icon-home"></i>
-                    <span class="title">首页</span>
+                    <span class="title">所有直播</span>
                     <span class="selected"></span>
-                    <span class="arrow open"></span>
+                    <%--<span class="arrow open"></span>--%>
                 </a>
-                <ul class="sub-menu">
-                    <li  class="active">
-                        <a href="">
-                            <i class="icon-bar-chart"></i>
-                            Default Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="icon-bulb"></i>
-                            New Dashboard #1</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="icon-graph"></i>
-                            New Dashboard #2</a>
-                    </li>
-                </ul>
+                <%--<ul class="sub-menu">--%>
+                    <%--<li  class="active">--%>
+                        <%--<a href="">--%>
+                            <%--<i class="icon-bar-chart"></i>--%>
+                            <%--Default Dashboard</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon-basket"></i>
-                    <span class="title">所有直播</span>
+                    <span class="title">直播分类</span>
                     <span class="arrow "></span>
                 </a>
                 <ul class="sub-menu">
                     <li>
                         <a href="/index/live">
                             <i class="icon-home"></i>
-                            Dashboard</a>
+                            游戏</a>
                     </li>
                     <li>
-                        <a href="">
-                            <i class="icon-basket"></i>
-                            Orders</a>
+                        <a href="/index/live">
+                            <i class="icon-home"></i>
+                            卖萌</a>
                     </li>
                     <li>
-                        <a href="">
-                            <i class="icon-tag"></i>
-                            Order View</a>
+                        <a href="/index/live">
+                            <i class="icon-home"></i>
+                            裸聊</a>
                     </li>
-                    <li>
-                        <a href="">
-                            <i class="icon-handbag"></i>
-                            Products</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="icon-pencil"></i>
-                            Product Edit</a>
-                    </li>
+
                 </ul>
             </li>
         </ul>
