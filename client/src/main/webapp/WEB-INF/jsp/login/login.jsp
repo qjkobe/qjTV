@@ -73,7 +73,8 @@
                 success: function(data){
                     temp = eval(data);
                     if(temp.status == "success"){
-                        alert("注册成功");
+                        alert("注册成功，请登录");
+                        history.go(0);
                     }else if(temp.status == "exist"){
                         alert("用户名已存在");
                     }
@@ -90,7 +91,7 @@
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="index.html">
-        <img src="${ctx}/theme/assets/admin/layout/img/logo-big.png" alt=""/>
+        <img src="${ctx}/theme/assets/admin/layout/img/qjlogo5.png" alt=""/>
     </a>
 </div>
 <!-- END LOGO -->

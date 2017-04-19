@@ -530,7 +530,7 @@
             chatinfo = '<div><div class="btn-group btn-group-circle"><button type="button" class="btn btn-circle-right btn-primary dropdown-toggle" data-uid="' + msg.userinfo.uid + '" data-toggle="dropdown">' + msg.userinfo.nickname + '<i class="fa fa-angle-down"></i></button>'
             chatinfo = chatinfo + '<ul class="dropdown-menu" role="menu"><li><a class="jinyan" href="javascript:;" onclick="jinyan(this)" data-uid="' + msg.userinfo.uid + '">禁言 </a></li>';
             chatinfo = chatinfo + '<li><a class="fangguan" href="javascript:;" onclick="fangguan(this)" data-uid="' + msg.userinfo.uid + '">任命房管 </a></li></ul></div>'
-            chatinfo = chatinfo + "<b>:" + msg.text + "</b></div>";
+            chatinfo = chatinfo + "<b> : " + msg.text + "</b></div>";
 
             $("#chat-list").append(chatinfo);
             $("#chat-list").scrollTop(200);
@@ -720,7 +720,7 @@
                 <ul class="page-breadcrumb">
                     <li>
                         <i class="fa fa-home"></i>
-                        <a href="index.html">所有分类</a>
+                        <a href="#">所有分类</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
@@ -729,40 +729,38 @@
                 </ul>
             </div>
             <!-- END PAGE HEADER-->
-            <h1>主播：${zhubo.nickname}的直播间</h1>关注数：<strong id="followNum">0</strong>
-            <h2>直播标题：${liveroom.title}</h2>
-            <c:if test="${isFollowed == 'n'}">
-                <button id="follow">关注</button>
-            </c:if>
+            <div class="row">
+                <div class="col-md-7">
+                    <h1 style="display : inline">主播：${zhubo.nickname}的直播间</h1>
+                </div>
+                <div class="">
+                    关注数：<strong id="followNum">0</strong>
+                    <c:if test="${isFollowed == 'n'}">
+                        <button class="btn btn-primary" id="follow">关注</button>
+                    </c:if>
 
-            <c:if test="${isFollowed == 'y'}">
-                <button id="unfollow">取消关注</button>
-            </c:if>
-            <div>
-                <form class="form-inline">
-                    <label for="bullet-type">类型</label>
-                    <select id="bullet-type" class="form-control">
-                        <option>下端滚动</option>
-                        <option>上端滚动</option>
-                        <option>底部固定</option>
-                        <option>顶部固定</option>
-                        <option>逆向弹幕</option>
-                    </select>
-                    <input type="text" id="danmuTxt">
-                    <button type="button" id="pushTxt">发送弹幕</button>
-                </form>
-                <br>
+                    <c:if test="${isFollowed == 'y'}">
+                        <button class="btn btn-primary" id="unfollow">取消关注</button>
+                    </c:if>
+                </div>
             </div>
-            <button type="button" class="btn btn-success disabled my-btn-block">
-                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                在线
-                <span id="online-number" class="badge">1</span>
-            </button>
+            <div class="row">
+                <div class="">
+                    <h2 >直播标题：${liveroom.title}</h2>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success disabled my-btn-block">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        在线
+                        <span id="online-number" class="badge">1</span>
+                    </button>
+                </div>
+            </div>
             <div class="container-fluid">
 
                 <div class="row">
                     <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
-                    <div class="col-lg-6 col-md-6 col-xs-12 my-col">
+                    <div class="col-lg-8 col-md-8 col-xs-12 my-col">
                         <div id='my-player' class='abp'>
                             <div id='my-comment-stage' class='container'>
                                 <video id="live-video" class="video-js vjs-default-skin vjs-big-play-centered" webkit-playsinline style="display: none">
@@ -772,21 +770,46 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-xs-12 my-col">
-                        <div id='gift-list' style="height:200px;">
-
+                    <div>
+                        <div class="col-lg-2 col-md-2 col-xs-12 my-col" id='gift-list' style="height:200px;line-height:60px;text-align:center">
+                            <span>贡献榜</span>
                         </div>
-                        <div id="chat-list" style="height:250px;line-height:50px;overflow:auto;overflow-x:hidden;">
+                        <div class="col-lg-4 col-md-4 col-xs-12 my-col" id="chat-list" style="height:350px;line-height:50px;overflow:auto;overflow-x:hidden;">
 
                         </div>
                     </div>
+                        <div class="col-lg-4 col-md-4 col-xs-12 my-col">
+                            <form class="form-inline">
+                                <label style="display: none;" for="bullet-type">类型</label>
+                                <select style="display: none;" id="bullet-type" class="form-control">
+                                    <option>下端滚动</option>
+                                    <option selected>上端滚动</option>
+                                    <option>底部固定</option>
+                                    <option>顶部固定</option>
+                                    <option>逆向弹幕</option>
+                                </select>
+                                <input type="text" id="danmuTxt">
+                                <button class="btn btn-primary" type="button" id="pushTxt">发送弹幕</button>
+                            </form>
+                            <br>
+                        </div>
                 </div>
             </div>
-            <button class="gift" data-value="500" data-count="5000">火箭</button>
-            <button class="gift" data-value="100" data-count="1000">飞机</button>
-            <button class="gift" data-value="10" data-count="100">自行车</button>
-            <button class="gift" data-value="1" data-count="10">遥控车</button>
-<button id="test">test</button>
+            <div class="row">
+                <div class="col-md-1 col-md-offset-4">
+                    <button class="btn btn-info gift" data-value="500" data-count="5000">火箭</button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-info gift" data-value="100" data-count="1000">飞机</button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-info gift" data-value="10" data-count="100">自行车</button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-info gift" data-value="1" data-count="10">遥控车</button>
+                </div>
+            </div>
+<%--<button id="test">test</button>--%>
 
             <p>
                 <%--Sample RTMP URL (Live) is "rtmp://115.159.62.204:1935/qunima/123"--%>

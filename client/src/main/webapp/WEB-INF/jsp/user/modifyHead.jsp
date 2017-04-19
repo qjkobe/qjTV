@@ -167,7 +167,6 @@
                     </div>
                 </div>
 
-                <div><button id="goZhibo">进入我的直播间</button></div>
             </div>
         </div>
         <!-- END CONTENT -->

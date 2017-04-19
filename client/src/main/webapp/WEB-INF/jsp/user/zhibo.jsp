@@ -695,16 +695,28 @@
                 </ul>
             </div>
             <!-- END PAGE HEADER-->
-            <h1>主播：${userinfo.nickname}的直播间</h1>关注数：<strong id="followNum">0</strong>
-            <h2>直播标题：${liveroom.title}</h2>
-            <button id="changeTitle" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#titleModal">修改标题</button>
+            <div class="row">
+                <div class="col-md-7">
+                    <h1 style="display : inline">主播：${userinfo.nickname}的直播间</h1>
+                </div>
+                <div class="">
+                    关注数：<strong id="followNum">0</strong>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h2 style="display : inline">直播标题：${liveroom.title}</h2>
+                </div>
+                <button id="changeTitle" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#titleModal">修改标题</button>
+            </div>
             <div>
-                <button id="openRoom">开启直播间</button>
-                <button id="closeRoom">关闭直播间</button>
+                <button class="btn btn-success" id="openRoom">开启直播间</button>
+                <button class="btn btn-warning" id="closeRoom">关闭直播间</button>
                 <br>
-                <strong>串流地址</strong><p id="app">${liveroom.app}</p><br>
-                <strong>串流码</strong><p id="stream">${liveroom.stream}</p><br>
-                <button id="setCover">设置直播封面</button>
+                <strong>串流地址</strong><p id="app">${liveroom.app}</p>
+                <strong>串流码</strong><p id="stream">${liveroom.stream}</p>
+                <button class="btn btn-info" id="setCover">设置直播封面</button>
             </div>
             <div class="row hidden" id="uploadCover">
                 <div class="col-xs-6">
@@ -725,21 +737,7 @@
                     </form>
                 </div>
             </div>
-            <div>
-                <form class="form-inline">
-                    <label for="bullet-type">类型</label>
-                    <select id="bullet-type" class="form-control">
-                        <option>下端滚动</option>
-                        <option>上端滚动</option>
-                        <option>底部固定</option>
-                        <option>顶部固定</option>
-                        <option>逆向弹幕</option>
-                    </select>
-                    <input type="text" id="danmuTxt">
-                    <button type="button" id="pushTxt">发送弹幕</button>
-                </form>
-                <br>
-            </div>
+
             <button type="button" class="btn btn-success disabled my-btn-block">
                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 在线
@@ -749,7 +747,7 @@
 
                 <div class="row">
                     <%--<div class="col-lg-2 col-md-1 col-xs-0 my-col"></div>--%>
-                    <div class="col-lg-6 col-md-6 col-xs-12 my-col">
+                    <div class="col-lg-8 col-md-8 col-xs-12 my-col">
                         <div id='my-player' class='abp'>
                             <div id='my-comment-stage' class='container'>
                                 <video id="live-video" class="video-js vjs-default-skin vjs-big-play-centered" webkit-playsinline style="display: none">
@@ -759,14 +757,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-xs-12 my-col">
-                        <div id='gift-list' style="height:200px;">
-
+                    <div>
+                        <div class="col-lg-2 col-md-2 col-xs-12 my-col" id='gift-list' style="height:200px;line-height:60px;text-align:center">
+                            <span>贡献榜</span>
                         </div>
-                        <div id="chat-list" style="height:250px;line-height:50px;overflow:auto;overflow-x:hidden;">
+                        <div class="col-lg-4 col-md-4 col-xs-12 my-col" id="chat-list" style="height:350px;line-height:50px;overflow:auto;overflow-x:hidden;">
 
                         </div>
                     </div>
+                        <div class="col-lg-4 col-md-4 col-xs-12 my-col">
+                            <form class="form-inline">
+                                <label style="display: none;" for="bullet-type">类型</label>
+                                <select style="display: none;" id="bullet-type" class="form-control">
+                                    <option>下端滚动</option>
+                                    <option selected>上端滚动</option>
+                                    <option>底部固定</option>
+                                    <option>顶部固定</option>
+                                    <option>逆向弹幕</option>
+                                </select>
+                                <input type="text" id="danmuTxt">
+                                <button class="btn btn-primary" type="button" id="pushTxt">发送弹幕</button>
+                            </form>
+                            <br>
+                        </div>
                 </div>
             </div>
 
