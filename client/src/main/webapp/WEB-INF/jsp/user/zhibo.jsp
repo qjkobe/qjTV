@@ -60,7 +60,7 @@
                     alert("不存在的");
                 }else if(temp.status == "success"){
                     giftList = temp.giftList;
-                    for(i = 0; i < 3; i++){
+                    for(i = 0; giftList.length && i < 3; i++){
                         var sendid = giftList[i].sendid;
                         $.ajax({
                             type: "POST",
@@ -758,9 +758,10 @@
                         </div>
                     </div>
                     <div>
-                        <div class="col-lg-2 col-md-2 col-xs-12 my-col" id='gift-list' style="height:200px;line-height:60px;text-align:center">
+                        <div class="col-lg-2 col-md-2 col-xs-12 my-col" id='gift-list' style="height:200px;line-height:50px;text-align:center">
                             <span>贡献榜</span>
                         </div>
+
                         <div class="col-lg-4 col-md-4 col-xs-12 my-col" id="chat-list" style="height:350px;line-height:50px;overflow:auto;overflow-x:hidden;">
 
                         </div>

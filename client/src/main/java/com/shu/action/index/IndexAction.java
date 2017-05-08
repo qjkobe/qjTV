@@ -20,6 +20,7 @@ import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -348,5 +349,59 @@ public class IndexAction {
             model.addAttribute("islogin", "n");
         }
         return "index/room";
+    }
+
+    /**
+     * 进入别人的直播间。每个人都有自己的房间号
+     */
+    @RequestMapping(value = "search", produces = "text/html;charset=UTF-8")
+    public String search(Model model, String str, HttpServletRequest request){
+
+        //根据房间号搜索
+        TLiveRoom queryRoom = new TLiveRoom();
+        queryRoom.setRoomnum(str);
+        List<TLiveRoom> list1 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
+        //如果list为空说明房间号错误，搜索不到房间号
+        if(list1.size() == 0){
+            model.addAttribute("liveroom", Const.STATUS_NO_RESULT);
+//            return "error/noRoom";
+        }else {
+            TLiveRoom room = list1.get(0);
+
+            model.addAttribute("liveroom", room);
+        }
+
+        //根据主播昵称搜索
+        TUserInfo userInfo = new TUserInfo();
+        userInfo.setNickname("%" + str + "%");
+        List<TUserInfo> list2 = tUserInfoService.searchLRoomListByNick(userInfo);
+        //如果list为空说明搜索不到类似昵称
+        if(list2.size() == 0){
+            model.addAttribute("liveroom2", Const.STATUS_NO_RESULT);
+//            return "error/noRoom";
+        }else {
+            //根据主播id返回直播间list，当然，这个用户开通了直播间才会被搜索到咯
+            List<TLiveRoom> list4 = new LinkedList<>();
+            for (TUserInfo ui : list2) {
+                TLiveRoom searchRoom = new TLiveRoom();
+                searchRoom.setUid(ui.getUid());
+                list4.add(tLiveRoomService.getLRoomListByParam(searchRoom, null, null).get(0));
+            }
+            model.addAttribute("liveroom2", list4);
+        }
+
+        //根据直播标题搜索
+        TLiveRoom tLiveRoom = new TLiveRoom();
+        tLiveRoom.setTitle("%" + str + "%");
+        List<TLiveRoom> list3 = tLiveRoomService.searchLRoomListByTitle(tLiveRoom);
+        //如果list为空说明搜索不到类似标题
+        if(list3.size() == 0){
+            model.addAttribute("liveroom3", Const.STATUS_NO_RESULT);
+//            return "error/noRoom";
+        }else {
+            model.addAttribute("liveroom3", list3);
+        }
+
+        return "index/search";
     }
 }

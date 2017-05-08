@@ -32,6 +32,13 @@ public class TLiveRoomServiceImpl implements TLiveRoomService {
         return tLiveRoomMapper.selectListByParam(room, order, page);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional(readOnly = true)
+    public List<TLiveRoom> searchLRoomListByTitle(TLiveRoom room) {
+        return tLiveRoomMapper.searchListByTitle(room);
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addLRoom(TLiveRoom room) {

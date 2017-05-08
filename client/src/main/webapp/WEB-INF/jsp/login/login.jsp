@@ -90,7 +90,7 @@
 <body class="page-md login">
 <!-- BEGIN LOGO -->
 <div class="logo">
-    <a href="index.html">
+    <a href="/index/live">
         <img src="${ctx}/theme/assets/admin/layout/img/qjlogo5.png" alt=""/>
     </a>
 </div>

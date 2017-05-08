@@ -12,6 +12,8 @@ import java.util.List;
 public interface TLiveRoomService {
     public List<TLiveRoom> getLRoomListByParam(TLiveRoom room, Order order, Pager page);
 
+    public List<TLiveRoom> searchLRoomListByTitle(TLiveRoom room);
+
     public void addLRoom(TLiveRoom room);
 
     public void modifyLRoom(TLiveRoom room);

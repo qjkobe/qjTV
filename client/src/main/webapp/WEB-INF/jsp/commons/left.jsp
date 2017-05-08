@@ -29,9 +29,9 @@
                         <i class="icon-close"></i>
                     </a>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="搜索...">
-							<span class="input-group-btn">
-							<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+                        <input type="text" class="form-control" id="str" placeholder="搜索...">
+							<span id="sousuo" class="input-group-btn">
+							<a href="javascript:;" class="btn"><i class="icon-magnifier"></i></a>
 							</span>
                     </div>
                 </form>
@@ -82,3 +82,15 @@
     </div>
 </div>
 <!-- END SIDEBAR -->
+
+<script>
+    $(function(){
+        $("#sousuo").click(function(){
+            if($("#str").val() == ""){
+                alert("搜索信息不能为空");
+            }else{
+                window.location.href = "/index/search?str=" + $("#str").val();
+            }
+        })
+    })
+</script>

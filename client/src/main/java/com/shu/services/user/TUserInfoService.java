@@ -17,4 +17,6 @@ public interface TUserInfoService {
     public void modifyUserinfo(TUserInfo userinfo);
 
     public TUserInfo getUserinfoById(String id);
+
+    public List<TUserInfo> searchLRoomListByNick(TUserInfo userinfo);
 }

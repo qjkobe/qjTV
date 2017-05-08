@@ -282,4 +282,14 @@
       and isDelete = #{pojo.isdelete,jdbcType=INTEGER}
     </if>
   </select>
+
+  <select id="searchListByTitle" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from t_live_room
+    where 1 = 1
+    <if test="pojo != null and pojo.title != null and pojo.title != ''">
+      and title LIKE #{pojo.title,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
 </mapper>

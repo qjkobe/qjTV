@@ -32,6 +32,13 @@ public class TUserInfoServiceImpl implements TUserInfoService {
         return tUserInfoMapper.selectListByParam(userinfo, order, page);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional(readOnly = true)
+    public List<TUserInfo> searchLRoomListByNick(TUserInfo userinfo) {
+        return tUserInfoMapper.searchListByNick(userinfo);
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addUserinfo(TUserInfo userinfo) {

@@ -212,4 +212,13 @@
             and isDelete = #{pojo.isdelete,jdbcType=INTEGER}
         </if>
     </select>
+
+    <select id="searchListByNick" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_user_info
+        where 1 = 1
+        <if test="pojo != null and pojo.nickname != null and pojo.nickname != ''">
+            and nickname LIKE #{pojo.nickname,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

@@ -70,4 +70,9 @@ public class Const {
      */
     public static final String STATUS_NO_ACCESS = "noaccess";
 
+    /**
+     * 用户权限不足
+     */
+    public static final String STATUS_NO_RESULT = "noresult";
+
 }

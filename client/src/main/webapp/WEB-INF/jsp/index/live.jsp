@@ -163,10 +163,11 @@
                         </c:if>
                         <li class="col-md-3 col-sm-3 list-group-item">
                             <a href="/index/toRoom/${item.roomnum}" title="点击进入直播间">
-                                <img src="${ctx}/upload/cover/${item.img}" width="270" height="180" alt="点击进入直播间">
+                                <img src="${ctx}/upload/cover/${item.img}" width="330" height="210" alt="点击进入直播间">
                             </a>
+                            <br><strong>标题: </strong>
                             <strong>${item.title}</strong>
-                            <br><strong id="${item.roomnum}online">0</strong>
+                            <br><strong>在线: </strong><strong id="${item.roomnum}online">0</strong>
                             <script>
                                 $.ajax({
                                     type: "POST",
