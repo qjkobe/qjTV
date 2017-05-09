@@ -23,65 +23,7 @@
 %>
 <script>
     $(function(){
-        $("#myFollow").click(function(){
-            $.ajax({
-                type: "POST",
-                url: "/index/myFollow",
-                dataType: "json",
-                success: function(data){
-                    temp = eval(data);
-                    if(temp.status == "success"){
-                        $("#followList").removeClass("hidden");
-                        if(temp.followList == 0){
-                            $("#noFollow").removeClass("hidden");
-                            $("#followed").addClass("hidden");
-                        }else{
-                            $("#noFollow").addClass("hidden");
-                            $("#followed").removeClass("hidden");
-                            if(temp.kaibos == 0){
-                                $("#kaibos").html("还没有关注的主播开播");
-                            }else {
-                                //拼接字符串
-                                var result1 = "";
-                                result1 += "<ul>";
-                                for (i = 0; i < temp.kaibos.length; i++) {
-                                    result1 += "<li>";
-                                    result1 += "<a href='/index/toRoom/" + temp.kaibos[i].roomnum + "' title='点击进入直播间'>";
-                                    result1 += temp.kaibos[i].title + "</a>";
-                                    result1 += "</li>";
-                                }
-                                result1 += "</ul>";
-                                $("#kaibos").html(result1);
-                            }
-                            if(temp.weikaibos == 0){
-                                $("#weikaibos").html("还没有关注的主播未开播");
-                            }else{
-                                var result2 = "";
-                                result2 += "<ul>";
-                                for(i = 0; i < temp.weikaibos.length; i++){
-                                    result2 += "<li>";
-                                    result2 += "<a href='/index/toRoom/" + temp.weikaibos[i].roomnum + "' title='点击进入直播间'>";
-                                    result2 += temp.weikaibos[i].title + "</a>";
-                                    result2 += "</li>";
-                                }
-                                result2 += "</ul>";
-                                $("#weikaibos").html(result2);
-                            }
-                        }
 
-                    }else if(temp.status == "nologin"){
-                        alert("请先登录");
-                    }
-                },
-                error: function(data){
-                    alert("系统错误");
-                }
-            })
-        });
-
-        $("#fold").click(function(){
-            $("#followList").addClass("hidden");
-        })
     })
 </script>
 <!-- BEGIN BODY -->
@@ -130,28 +72,11 @@
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">所有分类</a>
+                        <a href="#">${roomtype}</a>
                     </li>
                 </ul>
             </div>
             <!-- END PAGE HEADER-->
-            <button id="myFollow">我的关注</button>
-            <div class="hidden" id="followList">
-                <div id="noFollow" class="hidden">
-                    还没有关注过主播
-                </div>
-                <div id="followed">
-                    已开播：<br>
-                    <div id="kaibos">
-
-                    </div>
-                    未开播：<br>
-                    <div id="weikaibos">
-
-                    </div>
-                </div>
-                <button id="fold">收起</button>
-            </div>
             <div class="row">
                 <c:if test="${liverooms == 'none'}">
                     当前没有任何直播
@@ -192,6 +117,7 @@
                         <c:if test="${st.count % 4==0}">
                         </c:if>
                     </c:forEach>
+
                 </ul>
 </c:if>
             </div>

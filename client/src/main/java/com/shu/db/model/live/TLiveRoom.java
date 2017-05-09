@@ -27,6 +27,8 @@ public class TLiveRoom extends Pojo {
 
     private String rommnick;
 
+    private String roomtype;
+
     public String getId() {
         return id;
     }
@@ -114,4 +116,13 @@ public class TLiveRoom extends Pojo {
     public void setRommnick(String rommnick) {
         this.rommnick = rommnick;
     }
+
+    public String getRoomtype() {
+        return roomtype;
+    }
+
+    public void setRoomtype(String roomtype) {
+        this.roomtype = roomtype;
+    }
+
 }

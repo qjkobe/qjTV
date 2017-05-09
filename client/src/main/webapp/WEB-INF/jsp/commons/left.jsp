@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- BEGIN SIDEBAR -->
+<%
+%>
 <div class="page-sidebar-wrapper">
     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
     <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
@@ -24,7 +26,7 @@
                 <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
                 <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
                 <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
-                <form class="sidebar-search " action="" method="POST">
+                <form class="sidebar-search " action="#" method="POST">
                     <a href="javascript:;" class="remove">
                         <i class="icon-close"></i>
                     </a>
@@ -37,7 +39,7 @@
                 </form>
                 <!-- END RESPONSIVE QUICK SEARCH FORM -->
             </li>
-            <li class="start <%="live".equals(menuActive) ? "active" : ""%>">
+            <li id="mainmenu" class="start active">
                 <a href="/index/live">
                     <i class="icon-home"></i>
                     <span class="title">所有直播</span>
@@ -52,13 +54,13 @@
                     <%--</li>--%>
                 <%--</ul>--%>
             </li>
-            <li>
+            <li id="feileimenu">
                 <a href="javascript:;">
                     <i class="icon-basket"></i>
                     <span class="title">直播分类</span>
                     <span class="arrow "></span>
                 </a>
-                <ul class="sub-menu">
+                <ul class="sub-menu" id="type">
                     <li>
                         <a href="/index/live">
                             <i class="icon-home"></i>
@@ -85,6 +87,37 @@
 
 <script>
     $(function(){
+        $.ajax({
+            type: "POST",
+            url: "/type/getMenu",
+            data: {
+            },
+            dataType: "json",
+            success: function(data){
+                temp = eval(data);
+                if(temp.status == "success"){
+                    typelist = temp.menu;
+                    var result = "";
+                    for(i = 0; i < typelist.length; i++){
+                        if(typelist[i].name == "${roomtype}"){
+                            result += '<li class="active">';
+                            $("#mainmenu").removeClass("active");
+                            $("#feileimenu").addClass("active");
+                        }else{
+                            result += '<li>';
+                        }
+                        result += '<a href="/index/fenlei?typeid=' + typelist[i].id + '">';
+                        result += '<i class="icon-home"></i>';
+                        result += typelist[i].name + '</a>';
+                        result += '</li>';
+                    }
+                    $("#type").html(result);
+                }
+            },
+            error: function(data){
+                alert("系统错误");
+            }
+        });
         $("#sousuo").click(function(){
             if($("#str").val() == ""){
                 alert("搜索信息不能为空");

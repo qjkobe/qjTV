@@ -62,28 +62,30 @@
                     alert("不存在的");
                 }else if(temp.status == "success"){
                     giftList = temp.giftList;
-                    for(i = 0; i < giftList.length && i < 3; i++){
-                        var sendid = giftList[i].sendid;
-                        $.ajax({
-                            type: "POST",
-                            url: "/index/getnick",
-                            data: {
-                                uid: sendid
-                            },
-                            async:false,
-                            dataType: "json",
-                            success: function(data){
-                                temp2 = eval(data);
-                                if(temp2.status == "success"){
-                                    nickname = temp2.nickname;
+                    if(giftList != "nogift") {
+                        for (i = 0; i < giftList.length && i < 3; i++) {
+                            var sendid = giftList[i].sendid;
+                            $.ajax({
+                                type: "POST",
+                                url: "/index/getnick",
+                                data: {
+                                    uid: sendid
+                                },
+                                async: false,
+                                dataType: "json",
+                                success: function (data) {
+                                    temp2 = eval(data);
+                                    if (temp2.status == "success") {
+                                        nickname = temp2.nickname;
+                                    }
+                                },
+                                error: function (data) {
+                                    alert("系统错误");
                                 }
-                            },
-                            error: function(data){
-                                alert("系统错误");
-                            }
-                        });
-                        giftlistStr = "<div><b>" + nickname + "贡献值：" + giftList[i].total + "</b></div>";
-                        $("#gift-list").append(giftlistStr);
+                            });
+                            giftlistStr = "<div><b>" + nickname + "贡献值：" + giftList[i].total + "</b></div>";
+                            $("#gift-list").append(giftlistStr);
+                        }
                     }
                 }
             },
@@ -724,7 +726,7 @@
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">守望先锋</a>
+                        <a href="#">${roomtype.name}</a>
                     </li>
                 </ul>
             </div>
@@ -733,6 +735,9 @@
                 <div class="col-md-7">
                     <h1 style="display : inline">主播：${zhubo.nickname}的直播间</h1>
                 </div>
+<c:if test="${liveroom.islive == '0'}">
+    <strong style="color:red">哎呀介个主播还没开播</strong>
+</c:if>
                 <div class="">
                     关注数：<strong id="followNum">0</strong>
                     <c:if test="${isFollowed == 'n'}">

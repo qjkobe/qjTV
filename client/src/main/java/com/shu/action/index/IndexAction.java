@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.shu.db.model.follow.TFollow;
 import com.shu.db.model.live.TLiveRoom;
 import com.shu.db.model.live.TRoomBan;
+import com.shu.db.model.live.TRoomType;
 import com.shu.db.model.user.TUser;
 import com.shu.db.model.user.TUserInfo;
 import com.shu.services.follow.TFollowService;
 import com.shu.services.live.TLiveRoomService;
 import com.shu.services.live.TRoomBanService;
+import com.shu.services.live.TRoomTypeService;
 import com.shu.services.user.TUserInfoService;
 import com.shu.utils.Const;
 import com.shu.utils.JedisPoolUtils;
@@ -42,6 +44,9 @@ public class IndexAction {
 
     @Autowired
     TRoomBanService tRoomBanService;
+
+    @Autowired
+    TRoomTypeService tRoomTypeService;
 
     /**
      * 首页显示一个推荐直播。
@@ -208,6 +213,31 @@ public class IndexAction {
     }
 
     /**
+     * 直播页根据分类显示所有开播的直播。
+     */
+    @RequestMapping(value = "fenlei", produces = "text/html;charset=UTF-8")
+    public String fenlei(Model model, String typeid){
+
+        TRoomType tRoomType = tRoomTypeService.getRTypeById(typeid);
+
+        model.addAttribute("roomtype", tRoomType.getName());
+
+        TLiveRoom queryRoom = new TLiveRoom();
+        queryRoom.setIslive(1);
+        queryRoom.setRoomtype(typeid);
+        //TODO: 之后可以用Order类进行人气排序，后期进行智能推荐。现在先只是随便找一个开播的放在首页
+        List<TLiveRoom> list1 = tLiveRoomService.getLRoomListByParam(queryRoom, null, null);
+        if(list1.size() == 0){
+            //不要让这种没有任何直播开启的情况出现。
+            model.addAttribute("liverooms", "none");
+            return "index/fenlei";
+        }
+
+        model.addAttribute("liverooms", list1);
+        return "index/fenlei";
+    }
+
+    /**
      * 获取直播间人数
      */
     @RequestMapping(value = "getOnlineNum", produces = "text/html;charset=UTF-8")
@@ -307,6 +337,10 @@ public class IndexAction {
 
         model.addAttribute("liveroom", room);
 
+        //搜索房间分类
+        TRoomType tRoomType = tRoomTypeService.getRTypeById(room.getRoomtype());
+        model.addAttribute("roomtype", tRoomType);
+
         //把主播的信息也加入model
         TUserInfo queryUser = new TUserInfo();
         queryUser.setUid(room.getUid());
@@ -352,7 +386,7 @@ public class IndexAction {
     }
 
     /**
-     * 进入别人的直播间。每个人都有自己的房间号
+     * 搜索功能
      */
     @RequestMapping(value = "search", produces = "text/html;charset=UTF-8")
     public String search(Model model, String str, HttpServletRequest request){

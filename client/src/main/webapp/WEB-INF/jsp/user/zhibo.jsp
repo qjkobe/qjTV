@@ -60,28 +60,30 @@
                     alert("不存在的");
                 }else if(temp.status == "success"){
                     giftList = temp.giftList;
-                    for(i = 0; giftList.length && i < 3; i++){
-                        var sendid = giftList[i].sendid;
-                        $.ajax({
-                            type: "POST",
-                            url: "/index/getnick",
-                            data: {
-                                uid: sendid
-                            },
-                            async:false,
-                            dataType: "json",
-                            success: function(data){
-                                temp2 = eval(data);
-                                if(temp2.status == "success"){
-                                    nickname = temp2.nickname;
+                    if(giftList != "nogift") {
+                        for (i = 0; giftList.length && i < 3; i++) {
+                            var sendid = giftList[i].sendid;
+                            $.ajax({
+                                type: "POST",
+                                url: "/index/getnick",
+                                data: {
+                                    uid: sendid
+                                },
+                                async: false,
+                                dataType: "json",
+                                success: function (data) {
+                                    temp2 = eval(data);
+                                    if (temp2.status == "success") {
+                                        nickname = temp2.nickname;
+                                    }
+                                },
+                                error: function (data) {
+                                    alert("系统错误");
                                 }
-                            },
-                            error: function(data){
-                                alert("系统错误");
-                            }
-                        });
-                        giftlistStr = "<div><b>" + nickname + "贡献值：" + giftList[i].total + "</b></div>";
-                        $("#gift-list").append(giftlistStr);
+                            });
+                            giftlistStr = "<div><b>" + nickname + "贡献值：" + giftList[i].total + "</b></div>";
+                            $("#gift-list").append(giftlistStr);
+                        }
                     }
                 }
             },
@@ -291,6 +293,7 @@
                     temp = eval(data);
                     if(temp.status == "success"){
                         alert("直播间已开启，请按下方串流码进行直播");
+                        history.go(0);
                     }
                 },
                 error: function(data){
@@ -313,6 +316,7 @@
                     temp = eval(data);
                     if(temp.status == "success"){
                         alert("直播间已关闭，请停止串流，不然依旧可以在直播间看见画面");
+                        history.go(0);
                     }
                 },
                 error: function(data){
@@ -342,6 +346,56 @@
                 }
             });
         });
+
+        $("#saveType").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/type/saveType",
+                data: {
+                    roomid: "${liveroom.id}",
+                    typeid: $("#roomtype").val()
+                },
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "success"){
+                        alert("房间分类修改成功");
+                        history.go(0);
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+        });
+
+        $("#changeType").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/type/getMenu",
+                data: {
+                },
+                dataType: "json",
+                success: function(data){
+                    temp = eval(data);
+                    if(temp.status == "success"){
+                        typelist = temp.menu;
+                        var result = "";
+                        for(i = 0; i < typelist.length; i++){
+                            if(typelist[i].name == "${roomtype.name}"){
+                                result += '<option value ="'+ typelist[i].id + '" selected>'+ typelist[i].name + '</option>';
+                            }else{
+                                result += '<option value ="'+ typelist[i].id + '">'+ typelist[i].name + '</option>';
+                            }
+                        }
+                        $("#roomtype").html(result);
+                    }
+                },
+                error: function(data){
+                    alert("系统错误");
+                }
+            });
+        })
 
         $("#setCover").click(function(){
             $("#uploadCover").removeClass("hidden");
@@ -675,6 +729,26 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             </div>
+            <div class="modal fade" id="TypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel1">修改房间分类</h4>
+                        </div>
+                        <div class="modal-body">
+                            <select name="roomtype" id="roomtype">
+                                <option value ="${item.id}">${item.name}</option>
+
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" id="saveType">提交更改</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
             <!-- /.modal -->
             <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 
@@ -690,14 +764,18 @@
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">守望先锋</a>
+                        <a href="#">${roomtype.name}</a>
                     </li>
                 </ul>
             </div>
             <!-- END PAGE HEADER-->
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-3">
                     <h1 style="display : inline">主播：${userinfo.nickname}的直播间</h1>
+
+                </div>
+                <div class="col-md-4">
+                    <button id="changeType" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#TypeModal">修改房间分类</button>
                 </div>
                 <div class="">
                     关注数：<strong id="followNum">0</strong>
@@ -711,8 +789,12 @@
                 <button id="changeTitle" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#titleModal">修改标题</button>
             </div>
             <div>
-                <button class="btn btn-success" id="openRoom">开启直播间</button>
-                <button class="btn btn-warning" id="closeRoom">关闭直播间</button>
+                <c:if test="${liveroom.islive == '0'}">
+                    <button class="btn btn-success" id="openRoom">开启直播间</button>
+                </c:if>
+                <c:if test="${liveroom.islive == '1'}">
+                    <button class="btn btn-warning" id="closeRoom">关闭直播间</button>
+                </c:if>
                 <br>
                 <strong>串流地址</strong><p id="app">${liveroom.app}</p>
                 <strong>串流码</strong><p id="stream">${liveroom.stream}</p>

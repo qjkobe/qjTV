@@ -3,9 +3,11 @@ package com.shu.action.user;
 import com.alibaba.fastjson.JSONObject;
 import com.shu.config.SystemConfig;
 import com.shu.db.model.live.TLiveRoom;
+import com.shu.db.model.live.TRoomType;
 import com.shu.db.model.user.TUser;
 import com.shu.db.model.user.TUserInfo;
 import com.shu.services.live.TLiveRoomService;
+import com.shu.services.live.TRoomTypeService;
 import com.shu.services.user.TUserInfoService;
 import com.shu.services.user.TUserService;
 import com.shu.utils.Const;
@@ -38,6 +40,9 @@ public class UserAction {
 
     @Autowired
     TLiveRoomService tLiveRoomService;
+
+    @Autowired
+    TRoomTypeService tRoomTypeService;
 
     @RequestMapping(value = "userinfo", produces = "text/html;charset=UTF-8")
     public String userinfohtml(Model model, String userId, HttpServletRequest request){
@@ -174,6 +179,10 @@ public class UserAction {
             return "user/error";
         }
         model.addAttribute("liveroom", list1.get(0));
+
+        //搜索房间分类
+        TRoomType tRoomType = tRoomTypeService.getRTypeById(list1.get(0).getRoomtype());
+        model.addAttribute("roomtype", tRoomType);
 
         return "user/zhibo";
     }
